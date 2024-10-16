@@ -1,7 +1,7 @@
 import Keycloak, { KeycloakConfig, KeycloakInitOptions } from "keycloak-js";
 
 const initOptions: KeycloakConfig = {
-  url: "http://localhost:8081",
+  url: "http://keycloak-local.pl:8080",
   realm: "car-rental",
   clientId: "car-rental-client",
 };
