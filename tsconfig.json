@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "baseUrl": ".",
-    "strict": true,
-    "esModuleInterop": true,
-
+    "types": ["node"],
     "paths": {
       "@/*": ["src/*"]
     }

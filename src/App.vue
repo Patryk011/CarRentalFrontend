@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <div class="app-container">
     <header class="main-header">
@@ -16,6 +14,8 @@
     </footer>
   </div>
 </template>
+
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 * {

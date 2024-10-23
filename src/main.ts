@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { initKeycloak } from "./services/keycloak.service";
+import { initKeycloak } from "./services/keycloak.service.js";
 
 initKeycloak()
   .then(() => {
