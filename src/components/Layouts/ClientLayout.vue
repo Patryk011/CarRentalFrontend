@@ -13,6 +13,9 @@
               <a :href="item.link" class="menu-link"> {{ item.name }}</a>
             </li>
           </ul>
+          <button v-if="!authStore.isAuthenticated" @click="authStore.login">
+            Zaloguj się
+          </button>
         </nav>
       </div>
     </header>
@@ -27,6 +30,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useAuthStore } from "@/store/authStore";
+
+const authStore = useAuthStore();
 
 interface NavItem {
   name: string;

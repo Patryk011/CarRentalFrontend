@@ -1,11 +1,14 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
-import router from "./router/router";
+import router from "../src/router/router";
+import { initKeycloak } from "@/services/keycloak.service";
 
-const app = createApp(App);
 const pinia = createPinia();
 
-app.use(pinia);
-app.use(router);
-app.mount("#app");
+initKeycloak().then(() => {
+  const app = createApp(App);
+  app.use(pinia);
+  app.use(router);
+  app.mount("#app");
+});
