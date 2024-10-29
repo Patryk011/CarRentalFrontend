@@ -9,18 +9,13 @@ const initOptions: KeycloakConfig = {
 const keycloak = new Keycloak(initOptions);
 
 const initKeycloak = (): Promise<boolean> => {
-  const options: KeycloakInitOptions = {
-    onLoad: "login-required",
-  };
+  const options: KeycloakInitOptions = { onLoad: "check-sso" };
   return keycloak.init(options);
 };
 
 const login = (): Promise<void> => keycloak.login();
-
 const logout = (): Promise<void> => keycloak.logout();
-
 const register = (): Promise<void> => keycloak.register();
-
 const getToken = (): string | undefined => keycloak.token;
 
-export { initKeycloak, login, logout, register, getToken };
+export { initKeycloak, login, logout, register, getToken, keycloak };

@@ -1,12 +1,11 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { initKeycloak } from "./services/keycloak.service.js";
+import { createPinia } from "pinia";
+import router from "./router/router";
 
-initKeycloak()
-  .then(() => {
-    const app = createApp(App);
-    app.mount("#app");
-  })
-  .catch((err) => {
-    console.error("Keycloak initialization failed: ", err);
-  });
+const app = createApp(App);
+const pinia = createPinia();
+
+app.use(pinia);
+app.use(router);
+app.mount("#app");
