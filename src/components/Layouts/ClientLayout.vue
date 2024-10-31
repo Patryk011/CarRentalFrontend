@@ -13,9 +13,10 @@
               <a :href="item.link" class="menu-link"> {{ item.name }}</a>
             </li>
           </ul>
-          <button v-if="!authStore.isAuthenticated" @click="authStore.login">
+          <button v-if="!authStore.isAuthenticated" @click="handleLogin">
             Zaloguj się
           </button>
+          <button v-else @click="authStore.logout">Wyloguj się</button>
         </nav>
       </div>
     </header>
@@ -33,6 +34,14 @@ import { ref } from "vue";
 import { useAuthStore } from "@/store/authStore";
 
 const authStore = useAuthStore();
+
+const handleLogin = async () => {
+  try {
+    authStore.login();
+  } catch (err) {
+    console.error("Cant login");
+  }
+};
 
 interface NavItem {
   name: string;

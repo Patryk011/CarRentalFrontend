@@ -1,35 +1,25 @@
 import { defineStore } from "pinia";
-import {
-  initKeycloak,
-  login,
-  logout,
-  getToken,
-  keycloak,
-} from "../services/keycloak.service";
+import { keycloak } from "../services/keycloak.service";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    isAuthenticated: false,
-    isAdmin: false,
-    token: null as string | null,
+    isAuthenticated: null,
+    isAdmin: null,
   }),
   actions: {
     async initAuth() {
-      const authenticated = await initKeycloak();
-      this.isAuthenticated = authenticated;
-      this.token = keycloak.token || null;
-      this.isAdmin = keycloak.tokenParsed?.roles?.includes("admin") || false;
+      this.isAuthenticated = keycloak.authenticated || false;
+      this.isAdmin = keycloak.hasRealmRole("admin") || false;
+      console.log("Auth Store Initialized:", {
+        isAuthenticated: this.isAuthenticated,
+        isAdmin: this.isAdmin,
+      });
     },
-    async login() {
-      await login();
-      await this.initAuth();
+    login() {
+      keycloak.login();
     },
-    async logout() {
-      await logout();
-      this.$reset();
-    },
-    getToken() {
-      return getToken();
+    logout() {
+      keycloak.logout();
     },
   },
 });

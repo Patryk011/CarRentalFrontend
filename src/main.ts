@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
 import router from "../src/router/router";
-import { initKeycloak } from "@/services/keycloak.service";
+import { initKeycloak } from "./services/keycloak.service";
 
 const pinia = createPinia();
 

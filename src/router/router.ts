@@ -27,14 +27,19 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
 
+  if (!authStore.isAuthenticated) {
+    authStore.initAuth();
+  }
+
   if (to.meta.requiresAdmin) {
     if (!authStore.isAuthenticated) {
-      await authStore.initAuth();
+      return authStore.login();
     }
     if (!authStore.isAdmin) {
       return next("/");
     }
   }
+
   next();
 });
 
