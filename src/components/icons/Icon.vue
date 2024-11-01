@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div :class="['icon-wrapper']" :style="iconStyles" v-html="iconSvgContent" />
 </template>
 <script setup lang="ts">
@@ -12,16 +12,37 @@ const props = defineProps<{
   width?: number;
   height?: number;
   color?: string;
-  hoverColor?: string;
 }>();
 
 watchEffect(async () => {
   try {
-    const iconModule = await import(`@/assets/icons/${props.iconType}.svg`);
-    iconSvgContent.value = iconModule.default;
-  } catch (err) {
-    console.error(`Icon ${props.iconType} not found`);
+    const response = await fetch(`/src/assets/icons/${props.iconType}.svg`);
+
+    iconSvgContent.value = await response.text();
+  } catch (error) {
+    console.error(`Failed to load icon: ${props.iconType}`, error);
     iconSvgContent.value = "";
   }
 });
-</script> -->
+
+const iconStyles = computed<CSSProperties>(() => ({
+  fill: props.color || "currentcolor",
+  width: props.width ? `${props.width}px` : "24px",
+  height: props.height ? `${props.height}px` : "24px",
+}));
+</script>
+
+<style lang="scss" scoped>
+.icon-wrapper {
+  stroke: inherit;
+
+  svg {
+    display: block;
+    height: inherit;
+    width: inherit;
+    object-fit: contain;
+    aspect-ratio: 1;
+    stroke: inherit;
+  }
+}
+</style>

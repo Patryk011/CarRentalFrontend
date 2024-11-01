@@ -9,6 +9,15 @@
         </div>
         <nav class="navigation">
           <ul class="menu-navbar">
+            <a href="">
+              <Icon
+                iconType="Login"
+                :width="32"
+                :height="32"
+                color="#58595d"
+                hoverColor="#e60000"
+              />
+            </a>
             <li v-for="(item, index) in navItems" :key="index">
               <a :href="item.link" class="menu-link"> {{ item.name }}</a>
             </li>
@@ -32,6 +41,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAuthStore } from "@/store/authStore";
+import Icon from "../icons/Icon.vue";
 
 const authStore = useAuthStore();
 
