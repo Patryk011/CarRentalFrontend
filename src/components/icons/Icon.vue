@@ -12,6 +12,7 @@ const props = defineProps<{
   width?: number;
   height?: number;
   color?: string;
+  hoverColor?: string;
 }>();
 
 watchEffect(async () => {
@@ -26,7 +27,7 @@ watchEffect(async () => {
 });
 
 const iconStyles = computed<CSSProperties>(() => ({
-  fill: props.color || "currentcolor",
+  fill: props.color,
   width: props.width ? `${props.width}px` : "24px",
   height: props.height ? `${props.height}px` : "24px",
 }));
@@ -34,15 +35,21 @@ const iconStyles = computed<CSSProperties>(() => ({
 
 <style lang="scss" scoped>
 .icon-wrapper {
-  stroke: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 0.3s ease;
 
-  svg {
-    display: block;
+  &:hover {
+    ::v-deep svg {
+      fill: var(--hover-fill, #e60000);
+    }
+  }
+
+  ::v-deep svg {
+    fill: inherit;
     height: inherit;
     width: inherit;
-    object-fit: contain;
-    aspect-ratio: 1;
-    stroke: inherit;
   }
 }
 </style>

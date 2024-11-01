@@ -67,7 +67,7 @@ const navItems = ref<NavItem[]>([
 ]);
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .client-view {
   position: relative;
   display: flex;
