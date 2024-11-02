@@ -28,7 +28,7 @@ onMounted(async () => {
 
 const iconStyles = computed<CSSProperties>(() => ({
   "--fill": props.color,
-  "--hover-fill": props.hoverColor || "#e60000",
+  "--hover-fill": props.hoverColor,
   width: props.width ? `${props.width}px` : "32px",
   height: props.height ? `${props.height}px` : "32px",
 }));

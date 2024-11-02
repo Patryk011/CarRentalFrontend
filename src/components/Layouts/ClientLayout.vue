@@ -4,29 +4,25 @@
       <div class="header-wrapper">
         <div class="header-logo">
           <a href="/">
-            <img src="./assets/logo.png" alt="" />
+            <img src="../../assets/logo.png" alt="" />
           </a>
         </div>
         <nav class="navigation">
           <ul class="menu-navbar">
-            <a href="">
-              <Icon
-                iconType="Login"
-                :width="42"
-                :height="42"
-                color="#58595d"
-                hoverColor="#e60000"
-              />
-            </a>
             <li v-for="(item, index) in navItems" :key="index">
               <a :href="item.link" class="menu-link"> {{ item.name }}</a>
             </li>
           </ul>
-          <button v-if="!authStore.isAuthenticated" @click="handleLogin">
-            Zaloguj się
-          </button>
-          <button v-else @click="authStore.logout">Wyloguj się</button>
         </nav>
+        <div class="menu-quick-links">
+          <Icon
+            iconType="Login"
+            :width="32"
+            :height="32"
+            color="#58595d"
+            hoverColor="#e60000"
+          />
+        </div>
       </div>
     </header>
     <div class="main-content"></div>
@@ -92,9 +88,14 @@ const navItems = ref<NavItem[]>([
       margin: 0 auto;
       margin-top: 10px;
 
+      .header-logo {
+        flex: 1;
+      }
+
       .navigation {
         width: 100%;
         padding-top: 15px;
+        order: 3;
 
         .menu-navbar {
           display: flex;
