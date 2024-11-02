@@ -40,7 +40,7 @@ const iconStyles = computed<CSSProperties>(() => ({
   --hover-fill: #e60000;
 
 
-  ::v-deep svg {
+  :deep(svg) {
     height: inherit;
     width: inherit;
     fill: var(--fill);
