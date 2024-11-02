@@ -12,8 +12,8 @@
             <a href="">
               <Icon
                 iconType="Login"
-                :width="32"
-                :height="32"
+                :width="42"
+                :height="42"
                 color="#58595d"
                 hoverColor="#e60000"
               />
