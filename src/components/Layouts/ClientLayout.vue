@@ -2,30 +2,40 @@
   <div class="client-view">
     <header class="main-header">
       <div class="header-wrapper">
-        <div class="header-logo">
-          <a href="/">
-            <img src="../../assets/logo.png" alt="" />
-          </a>
-        </div>
-        <nav class="navigation">
+        <nav class="navigation" aria-label="Main Navigation">
+          <div class="header-logo">
+            <a href="/">
+              <img src="../../assets/logo.png" alt="Company Logo" />
+            </a>
+          </div>
+
           <ul class="menu-navbar">
             <li v-for="(item, index) in navItems" :key="index">
-              <a :href="item.link" class="menu-link"> {{ item.name }}</a>
+              <a :href="item.link" class="menu-link">{{ item.name }}</a>
             </li>
           </ul>
+
+          <div class="menu-quick-links">
+            <div class="quick-link-item">
+              <Icon iconType="Phone" :width="28" :height="28" color="#e60000" />
+              <span>+48 99 999 99 99</span>
+            </div>
+            <button @click="handleLogin" class="login-button">
+              <Icon
+                iconType="Login"
+                :width="32"
+                :height="32"
+                color="#58595d"
+                hoverColor="#e60000"
+              />
+            </button>
+          </div>
         </nav>
-        <div class="menu-quick-links">
-          <Icon
-            iconType="Login"
-            :width="32"
-            :height="32"
-            color="#58595d"
-            hoverColor="#e60000"
-          />
-        </div>
       </div>
     </header>
-    <div class="main-content"></div>
+
+    <main class="main-content"></main>
+
     <footer>
       <div class="footer-container">
         &copy; 2024 Wypożyczalnia samochodów. Wszelkie prawa zastrzeżone.
@@ -45,7 +55,7 @@ const handleLogin = async () => {
   try {
     authStore.login();
   } catch (err) {
-    console.error("Cant login");
+    console.error("Can't login");
   }
 };
 
@@ -62,7 +72,6 @@ const navItems = ref<NavItem[]>([
   { name: "Kontakt", link: "/kontakt" },
 ]);
 </script>
-
 <style lang="scss">
 .client-view {
   position: relative;
@@ -82,34 +91,62 @@ const navItems = ref<NavItem[]>([
 
     .header-wrapper {
       display: flex;
-      flex-wrap: wrap;
-      max-width: 1260px;
+      justify-content: center;
+      max-width: 1200px;
       align-items: center;
       margin: 0 auto;
-      margin-top: 10px;
-
-      .header-logo {
-        flex: 1;
-      }
+      padding: 10px 20px;
 
       .navigation {
+        display: flex;
+        align-items: center;
         width: 100%;
-        padding-top: 15px;
-        order: 3;
+        justify-content: space-between;
+        padding-top: 20px;
 
         .menu-navbar {
           display: flex;
+          justify-content: center;
           align-items: center;
-          justify-content: space-between;
           list-style: none;
+          margin: 0;
+          padding: 0;
+          flex: 1;
+          gap: 2.5em;
 
           .menu-link {
-            height: 40px;
-            width: 40px;
-            line-height: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #58595d;
+            padding: 10px 15px;
+
+            &:hover,
+            &:focus {
+              color: #e60000;
+            }
+          }
+        }
+
+        .menu-quick-links {
+          display: flex;
+          align-items: center;
+          gap: 1.5em;
+
+          .quick-link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            color: #e60000;
+            font-size: 1rem;
+          }
+
+          .login-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             padding: 0;
-            white-space: nowrap;
-            text-align: center;
           }
         }
       }
@@ -129,20 +166,9 @@ const navItems = ref<NavItem[]>([
     padding: 40px 0;
 
     .footer-container {
-      max-width: 1260px;
+      max-width: 1200px;
       margin: 0 auto;
       text-align: left;
-    }
-  }
-
-  .menu-link {
-    text-decoration: none;
-    max-width: 100%;
-    font-weight: bold;
-    color: #58595d;
-
-    &:hover {
-      color: #e60000;
     }
   }
 }

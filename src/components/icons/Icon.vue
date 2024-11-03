@@ -1,6 +1,11 @@
 <template>
-  <div :class="['icon-wrapper']" :style="iconStyles" v-html="iconSvgContent" />
+  <div
+    :class="['icon-wrapper', { 'has-hover': props.hoverColor }]"
+    :style="iconStyles"
+    v-html="iconSvgContent"
+  />
 </template>
+
 <script setup lang="ts">
 import { computed, CSSProperties, ref, onMounted } from "vue";
 import { type TIconTYpe } from "./Icon.types";
@@ -18,7 +23,6 @@ const props = defineProps<{
 onMounted(async () => {
   try {
     const response = await fetch(`/src/assets/icons/${props.iconType}.svg`);
-
     iconSvgContent.value = await response.text();
   } catch (error) {
     console.error(`Failed to load icon: ${props.iconType}`, error);
@@ -27,8 +31,8 @@ onMounted(async () => {
 });
 
 const iconStyles = computed<CSSProperties>(() => ({
-  "--fill": props.color,
-  "--hover-fill": props.hoverColor,
+  "--fill": props.color || "black",
+  ...(props.hoverColor && { "--hover-fill": props.hoverColor }),
   width: props.width ? `${props.width}px` : "32px",
   height: props.height ? `${props.height}px` : "32px",
 }));
@@ -36,19 +40,21 @@ const iconStyles = computed<CSSProperties>(() => ({
 
 <style lang="scss" scoped>
 .icon-wrapper {
-  --fill: black,
-  --hover-fill: #e60000;
-
+  --fill: black;
 
   :deep(svg) {
     height: inherit;
     width: inherit;
     fill: var(--fill);
     transition: fill 0.1s ease-in, stroke 0.1s ease-in;
-
-    &:hover {
-      fill: var(--hover-fill);
   }
+
+  &.has-hover {
+    :deep(svg) {
+      &:hover {
+        fill: var(--hover-fill);
+      }
+    }
   }
 }
 </style>
