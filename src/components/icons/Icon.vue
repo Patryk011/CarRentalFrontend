@@ -1,8 +1,13 @@
-<!-- <template>
-  <div :class="['icon-wrapper']" :style="iconStyles" v-html="iconSvgContent" />
+<template>
+  <div
+    :class="['icon-wrapper', { 'has-hover': props.hoverColor }]"
+    :style="iconStyles"
+    v-html="iconSvgContent"
+  />
 </template>
+
 <script setup lang="ts">
-import { computed, CSSProperties, ref, watchEffect } from "vue";
+import { computed, CSSProperties, ref, onMounted } from "vue";
 import { type TIconTYpe } from "./Icon.types";
 
 const iconSvgContent = ref<string>("");
@@ -15,13 +20,41 @@ const props = defineProps<{
   hoverColor?: string;
 }>();
 
-watchEffect(async () => {
+onMounted(async () => {
   try {
-    const iconModule = await import(`@/assets/icons/${props.iconType}.svg`);
-    iconSvgContent.value = iconModule.default;
-  } catch (err) {
-    console.error(`Icon ${props.iconType} not found`);
+    const response = await fetch(`/src/assets/icons/${props.iconType}.svg`);
+    iconSvgContent.value = await response.text();
+  } catch (error) {
+    console.error(`Failed to load icon: ${props.iconType}`, error);
     iconSvgContent.value = "";
   }
 });
-</script> -->
+
+const iconStyles = computed<CSSProperties>(() => ({
+  "--fill": props.color || "black",
+  ...(props.hoverColor && { "--hover-fill": props.hoverColor }),
+  width: props.width ? `${props.width}px` : "32px",
+  height: props.height ? `${props.height}px` : "32px",
+}));
+</script>
+
+<style lang="scss" scoped>
+.icon-wrapper {
+  --fill: black;
+
+  :deep(svg) {
+    height: inherit;
+    width: inherit;
+    fill: var(--fill);
+    transition: fill 0.1s ease-in, stroke 0.1s ease-in;
+  }
+
+  &.has-hover {
+    :deep(svg) {
+      &:hover {
+        fill: var(--hover-fill);
+      }
+    }
+  }
+}
+</style>
