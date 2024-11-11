@@ -13,7 +13,7 @@
     </header>
 
     <main class="main-content"></main>
-    <HomeView />
+    <router-view />
     <footer>
       <div class="footer-container">
         &copy; 2024 Wypożyczalnia samochodów. Wszelkie prawa zastrzeżone.
@@ -27,7 +27,6 @@ import { ref } from "vue";
 import NavigationMenu from "../Client/organisms/NavigationMenu.vue";
 import Logo from "../Shared/atoms/Logo/Logo.vue";
 import MenuInfo from "../Client/organisms/MenuInfo.vue";
-import HomeView from "../Client/views/HomeView.vue";
 
 const navItems = ref([
   { name: "Wynajem auta", link: "/wynajem-auta" },

@@ -16,6 +16,12 @@
       />
       <div class="dropdown-content">
         <a href="#" @click.prevent="moveToAccount">Moje konto</a>
+        <a
+          v-if="authStore.isAuthenticated"
+          href="#"
+          @click.prevent="authStore.logout"
+          >Wyloguj sie</a
+        >
       </div>
     </div>
   </div>
@@ -31,11 +37,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const moveToAccount = () => {
-  if (authStore.isAuthenticated) {
-    router.push("/account");
-  } else {
-    authStore.login();
-  }
+  router.push("account");
 };
 </script>
 
@@ -70,7 +72,7 @@ const moveToAccount = () => {
         padding: 10px 16px;
         text-decoration: none;
         display: block;
-        width: 7em;
+        width: 8em;
 
         &:hover {
           background-color: #f1f1f1;

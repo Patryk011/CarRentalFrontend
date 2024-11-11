@@ -12,7 +12,7 @@ const routes = [
     component: ClientLayout,
     children: [
       { path: "", component: HomeView },
-      { path: "account", component: Account },
+      { path: "account", component: Account, meta: { requiresAuth: true } },
     ],
   },
   {
@@ -41,6 +41,12 @@ router.beforeEach(async (to, from, next) => {
     }
     if (!authStore.isAdmin) {
       return next("/");
+    }
+  }
+
+  if (to.meta.requiresAuth) {
+    if (!authStore.isAuthenticated) {
+      return authStore.login();
     }
   }
 
