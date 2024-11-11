@@ -15,13 +15,8 @@
         @click.prevent="moveToAccount"
       />
       <div class="dropdown-content">
-        <a href="#" @click.prevent="moveToAccount">Moje konto</a>
-        <a
-          v-if="authStore.isAuthenticated"
-          href="#"
-          @click.prevent="authStore.logout"
-          >Wyloguj sie</a
-        >
+        <a href="#" @click.prevent="moveToAccount">{{ accountLinkText }}</a>
+        <a href="#" @click.prevent="handleAuthAction">{{ authActionText }}</a>
       </div>
     </div>
   </div>
@@ -30,6 +25,7 @@
 <script setup lang="ts">
 import Icon from "@/components/Shared/atoms/Icon/Icon.vue";
 import { useAuthStore } from "@/store/authStore";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -39,6 +35,18 @@ const authStore = useAuthStore();
 const moveToAccount = () => {
   router.push("account");
 };
+
+const handleAuthAction = () => {
+  return authStore.isAuthenticated ? authStore.logout() : authStore.register();
+};
+
+const accountLinkText = computed(() => {
+  return authStore.isAuthenticated ? "Moje konto" : "Zaloguj się";
+});
+
+const authActionText = computed(() => {
+  return authStore.isAuthenticated ? "Wyloguj się" : "Zarejestruj się";
+});
 </script>
 
 <style lang="scss" scoped>
@@ -72,7 +80,7 @@ const moveToAccount = () => {
         padding: 10px 16px;
         text-decoration: none;
         display: block;
-        width: 8em;
+        width: 10em;
 
         &:hover {
           background-color: #f1f1f1;

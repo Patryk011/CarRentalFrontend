@@ -2,7 +2,7 @@
   <div class="client-view">
     <header class="main-header">
       <div class="header-wrapper">
-        <nav class="navigation" aria-label="Main Navigation">
+        <nav class="navigation">
           <Logo />
 
           <NavigationMenu :navItems />

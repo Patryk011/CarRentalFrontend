@@ -1,12 +1,10 @@
 import { defineStore } from "pinia";
 import { keycloak } from "../services/keycloak.service";
-import router from "@/router/router";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isAuthenticated: null,
     isAdmin: null,
-    redirectAfterLogin: null,
   }),
   actions: {
     async initAuth() {
@@ -20,6 +18,10 @@ export const useAuthStore = defineStore("auth", {
       keycloak.logout({
         redirectUri: window.location.origin,
       });
+    },
+
+    register() {
+      keycloak.register();
     },
   },
 });
