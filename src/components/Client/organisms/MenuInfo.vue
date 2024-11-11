@@ -5,22 +5,17 @@
       <span>+48 99 999 99 99</span>
     </div>
 
-    <div
-      class="login-dropdown"
-      @mouseenter="isDropDownVisible = true"
-      @mouseleave="isDropDownVisible = false"
-    >
-      <button class="login-button">
-        <Icon
-          iconType="Login"
-          :width="32"
-          :height="32"
-          color="#58595d"
-          hoverColor="#e60000"
-        />
-      </button>
-      <div v-if="isDropDownVisible" class="dropdown-content" @click.stop>
-        <a href="#" @click.prevent="moveToAccount">Konto</a>
+    <div class="login-dropdown">
+      <Icon
+        iconType="Login"
+        :width="32"
+        :height="32"
+        color="#58595d"
+        hoverColor="#e60000"
+        @click.prevent="moveToAccount"
+      />
+      <div class="dropdown-content">
+        <a href="#" @click.prevent="moveToAccount">Moje konto</a>
       </div>
     </div>
   </div>
@@ -30,20 +25,10 @@
 import Icon from "@/components/Shared/atoms/Icon/Icon.vue";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
 
-const isDropDownVisible = ref(false);
 const router = useRouter();
 
 const authStore = useAuthStore();
-
-const handleLogin = async () => {
-  try {
-    authStore.login();
-  } catch (err) {
-    console.error("Can't login");
-  }
-};
 
 const moveToAccount = () => {
   if (authStore.isAuthenticated) {
@@ -70,46 +55,38 @@ const moveToAccount = () => {
 
   .login-dropdown {
     position: relative;
-
-    .login-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 0;
-    }
+    cursor: pointer;
 
     .dropdown-content {
+      display: none;
       position: absolute;
-      top: 100%;
-      right: 0;
       background-color: white;
       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
       border-radius: 4px;
       overflow: hidden;
-      margin-top: 8px;
+
       a {
         color: #333;
-        padding: 12px 16px;
+        padding: 10px 16px;
         text-decoration: none;
         display: block;
-        transition: background-color 0.2s ease-in-out;
+        width: 7em;
 
         &:hover {
           background-color: #f1f1f1;
         }
       }
     }
-  }
 
-  .login-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0;
+    &:hover {
+      .dropdown-content {
+        display: block;
+      }
+
+      :deep(svg) {
+        fill: #e60000;
+      }
+    }
   }
 }
 </style>

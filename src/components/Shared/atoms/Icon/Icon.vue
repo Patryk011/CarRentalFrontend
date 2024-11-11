@@ -8,12 +8,12 @@
 
 <script setup lang="ts">
 import { computed, CSSProperties, ref, onMounted } from "vue";
-import { type TIconTYpe } from "./Icon.types";
+import { type TIconType } from "./Icon.types";
 
 const iconSvgContent = ref<string>("");
 
 const props = defineProps<{
-  iconType: TIconTYpe;
+  iconType: TIconType;
   width?: number;
   height?: number;
   color?: string;

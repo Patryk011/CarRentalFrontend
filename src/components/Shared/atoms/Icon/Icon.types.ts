@@ -1,1 +1,1 @@
-export type TIconTYpe = "Login" | "Phone";
+export type TIconType = "Login" | "Phone";
