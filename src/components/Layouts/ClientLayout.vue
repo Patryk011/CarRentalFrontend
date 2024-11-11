@@ -2,40 +2,18 @@
   <div class="client-view">
     <header class="main-header">
       <div class="header-wrapper">
-        <nav class="navigation" aria-label="Main Navigation">
-          <div class="header-logo">
-            <a href="/">
-              <img src="../../assets/logo.png" alt="Company Logo" />
-            </a>
-          </div>
+        <nav class="navigation">
+          <Logo />
 
-          <ul class="menu-navbar">
-            <li v-for="(item, index) in navItems" :key="index">
-              <a :href="item.link" class="menu-link">{{ item.name }}</a>
-            </li>
-          </ul>
+          <NavigationMenu :navItems />
 
-          <div class="menu-quick-links">
-            <div class="quick-link-item">
-              <Icon iconType="Phone" :width="28" :height="28" color="#e60000" />
-              <span>+48 99 999 99 99</span>
-            </div>
-            <button @click="handleLogin" class="login-button">
-              <Icon
-                iconType="Login"
-                :width="32"
-                :height="32"
-                color="#58595d"
-                hoverColor="#e60000"
-              />
-            </button>
-          </div>
+          <MenuInfo />
         </nav>
       </div>
     </header>
 
     <main class="main-content"></main>
-
+    <router-view />
     <footer>
       <div class="footer-container">
         &copy; 2024 Wypożyczalnia samochodów. Wszelkie prawa zastrzeżone.
@@ -46,25 +24,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuthStore } from "@/store/authStore";
-import Icon from "../icons/Icon.vue";
+import NavigationMenu from "../Client/organisms/NavigationMenu.vue";
+import Logo from "../Shared/atoms/Logo/Logo.vue";
+import MenuInfo from "../Client/organisms/MenuInfo.vue";
 
-const authStore = useAuthStore();
-
-const handleLogin = async () => {
-  try {
-    authStore.login();
-  } catch (err) {
-    console.error("Can't login");
-  }
-};
-
-interface NavItem {
-  name: string;
-  link: string;
-}
-
-const navItems = ref<NavItem[]>([
+const navItems = ref([
   { name: "Wynajem auta", link: "/wynajem-auta" },
   { name: "Flota", link: "/flota" },
   { name: "O nas", link: "/o-nas" },
@@ -103,52 +67,6 @@ const navItems = ref<NavItem[]>([
         width: 100%;
         justify-content: space-between;
         padding-top: 20px;
-
-        .menu-navbar {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          flex: 1;
-          gap: 2.5em;
-
-          .menu-link {
-            text-decoration: none;
-            font-weight: bold;
-            color: #58595d;
-            padding: 10px 15px;
-
-            &:hover,
-            &:focus {
-              color: #e60000;
-            }
-          }
-        }
-
-        .menu-quick-links {
-          display: flex;
-          align-items: center;
-          gap: 1.5em;
-
-          .quick-link-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5em;
-            color: #e60000;
-            font-size: 1rem;
-          }
-
-          .login-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 0;
-          }
-        }
       }
     }
   }

@@ -10,16 +10,18 @@ export const useAuthStore = defineStore("auth", {
     async initAuth() {
       this.isAuthenticated = keycloak.authenticated || false;
       this.isAdmin = keycloak.hasRealmRole("admin") || false;
-      console.log("Auth Store Initialized:", {
-        isAuthenticated: this.isAuthenticated,
-        isAdmin: this.isAdmin,
-      });
     },
     login() {
       keycloak.login();
     },
     logout() {
-      keycloak.logout();
+      keycloak.logout({
+        redirectUri: window.location.origin,
+      });
+    },
+
+    register() {
+      keycloak.register();
     },
   },
 });
