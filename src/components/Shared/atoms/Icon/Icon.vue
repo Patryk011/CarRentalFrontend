@@ -8,17 +8,11 @@
 
 <script setup lang="ts">
 import { computed, CSSProperties, ref, onMounted } from "vue";
-import { type TIconType } from "./Icon.types";
+import { IIconProps } from "./Icon.types";
 
 const iconSvgContent = ref<string>("");
 
-const props = defineProps<{
-  iconType: TIconType;
-  width?: number;
-  height?: number;
-  color?: string;
-  hoverColor?: string;
-}>();
+const props = defineProps<IIconProps>();
 
 onMounted(async () => {
   try {
