@@ -7,7 +7,7 @@
     >
       <Icon
         iconType="RightArrows"
-        color="white"
+        color="#f1f5f9"
         :class="{ rotated: isExpanded }"
       />
     </button>

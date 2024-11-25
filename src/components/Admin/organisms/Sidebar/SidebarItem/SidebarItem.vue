@@ -27,7 +27,9 @@ const iconColor = computed(() =>
 </script>
 <style lang="scss" scoped>
 .sidebar-item-wrapper {
-  --active-bg-color: rgba(255, 255, 255, 0.1);
+  --default-site-color: #e6000e;
+  --active-bg-color: rgba(255, 255, 255, 0.12);
+  --hover-color: rgba(255, 255, 255, 0.05);
   --text-color: #f1f5f9;
   --active-color: #f1f5f9;
 
@@ -48,7 +50,7 @@ const iconColor = computed(() =>
     &.active {
       color: var(--active-color);
       background-color: var(--active-bg-color);
-      border-right: 5px solid var(--primary);
+      border-right: 5px solid var(--default-site-color);
     }
 
     .sidebar-text {

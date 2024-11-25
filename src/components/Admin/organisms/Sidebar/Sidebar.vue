@@ -3,17 +3,17 @@
     <MenuToggle :isExpanded @toggle="toggleSidebar" />
     <nav class="menu">
       <h3>Menu</h3>
-      <SidebarItem to="/admin" icon="Home" text="Home" />
+      <SidebarItem to="/admin" icon="Home" text="Panel" />
+      <LogoutButton text="Wyloguj" />
     </nav>
-
-    <div class="flex"></div>
   </aside>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import MenuToggle from "../MenuToggle/MenuToggle.vue";
+import MenuToggle from "./MenuToggle/MenuToggle.vue";
 import SidebarItem from "./SidebarItem/SidebarItem.vue";
+import LogoutButton from "./LogoutButton/LogoutButton.vue";
 
 const isExpanded = ref(false);
 
@@ -33,10 +33,6 @@ aside {
   transition: width 0.3s ease-in-out;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   position: relative;
-
-  .flex {
-    flex: 1 1 0;
-  }
 
   .menu {
     display: flex;
@@ -63,12 +59,6 @@ aside {
     h3 {
       display: block;
       opacity: 1;
-    }
-
-    .menu-item .sidebar-text,
-    .text {
-      opacity: 1;
-      transition: opacity 0.3s ease-in-out;
     }
   }
 
