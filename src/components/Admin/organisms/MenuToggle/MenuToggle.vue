@@ -1,9 +1,13 @@
 <template>
   <div class="menu-toggle-wrap">
-    <button class="menu-toggle" @click="toggle">
+    <button
+      class="menu-toggle"
+      @click="toggle"
+      :class="{ expanded: isExpanded }"
+    >
       <Icon
         iconType="RightArrows"
-        color="gray"
+        color="white"
         :class="{ rotated: isExpanded }"
       />
     </button>
@@ -39,9 +43,23 @@ const toggle = () => {
     border: none;
     cursor: pointer;
     padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateX(0.5rem);
+    }
+
+    &.expanded:hover {
+      transform: translateX(-0.5rem);
+    }
   }
-}
-.rotated {
-  transform: rotate(-180deg);
+
+  .rotated {
+    transform: rotate(-180deg);
+    transition: transform 0.3s ease;
+  }
 }
 </style>

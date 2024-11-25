@@ -27,39 +27,36 @@ const iconColor = computed(() =>
 </script>
 <style lang="scss" scoped>
 .sidebar-item-wrapper {
-  --hover-color: #bdbbbb;
-  --active-bg-color: #dbdbdb;
-  --active-color: #e60000;
-  --text-color: #2a2a2b;
+  --active-bg-color: rgba(255, 255, 255, 0.1);
+  --text-color: #f1f5f9;
+  --active-color: #f1f5f9;
 
   .sidebar-item {
     display: flex;
     align-items: center;
     gap: 1rem;
     text-decoration: none;
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem;
     color: var(--text-color);
     background-color: transparent;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &:hover {
       background-color: var(--hover-color);
-
-      .icon-wrapper {
-        transform: scale(1.1);
-        transition: transform 0.3s ease-in-out;
-      }
     }
 
     &.active {
-      background-color: var(--active-bg-color);
       color: var(--active-color);
+      background-color: var(--active-bg-color);
+      border-right: 5px solid var(--primary);
     }
 
     .sidebar-text {
       padding-top: 0.2rem;
       font-size: 1rem;
       font-weight: 600;
+      color: var(--text-color);
+      transition: opacity 0.3s ease-in-out;
     }
   }
 }
