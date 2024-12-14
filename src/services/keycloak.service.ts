@@ -10,17 +10,27 @@ const keycloak = new Keycloak(initOptions);
 
 const initKeycloak = (): Promise<boolean> => {
   const options: KeycloakInitOptions = {
-    onLoad: "login-required",
+    onLoad: "check-sso",
+    checkLoginIframe: false,
   };
-  return keycloak.init(options);
+  return keycloak
+    .init(options)
+    .then((authenticated) => {
+      return authenticated;
+    })
+    .catch((error) => {
+      // Handling an error that occurs only in Firefox browser when onLoad is set to "check-sso"
+      if (error.error === "login_required") {
+        keycloak.login();
+        return true;
+      } else {
+        console.error("Keycloak initialization failed:", error);
+        throw error;
+      }
+    });
 };
 
-const login = (): Promise<void> => keycloak.login();
-
-const logout = (): Promise<void> => keycloak.logout();
-
 const register = (): Promise<void> => keycloak.register();
-
 const getToken = (): string | undefined => keycloak.token;
 
-export { initKeycloak, login, logout, register, getToken };
+export { initKeycloak, register, getToken, keycloak };
