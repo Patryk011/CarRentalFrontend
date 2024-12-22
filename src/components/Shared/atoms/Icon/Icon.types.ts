@@ -4,7 +4,8 @@ export type TIconType =
   | "LeftArrow"
   | "RightArrows"
   | "Home"
-  | "Logout";
+  | "Logout"
+  | "Users";
 
 export interface IIconProps {
   iconType: TIconType;

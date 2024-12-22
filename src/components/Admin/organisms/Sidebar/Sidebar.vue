@@ -4,6 +4,7 @@
     <nav class="menu">
       <h3>Menu</h3>
       <SidebarItem to="/admin" icon="Home" text="Panel" />
+      <SidebarItem to="/admin/users" icon="Users" text="Użytkownicy" />
       <LogoutButton text="Wyloguj" />
     </nav>
   </aside>
