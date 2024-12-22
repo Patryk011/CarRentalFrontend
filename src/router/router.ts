@@ -5,6 +5,7 @@ import AdminLayout from "@/components/Layouts/AdminLayout.vue";
 import Dashboard from "@/components/Admin/views/Dashboard.vue";
 import { useAuthStore } from "@/store/authStore";
 import Account from "@/components/Client/views/Account.vue";
+import Users from "@/components/Admin/views/Users.vue";
 
 const routes = [
   {
@@ -18,7 +19,10 @@ const routes = [
   {
     path: "/admin",
     component: AdminLayout,
-    children: [{ path: "dashboard", component: Dashboard }],
+    children: [
+      { path: "", component: Dashboard },
+      { path: "users", component: Users },
+    ],
     meta: { requiresAdmin: true },
   },
 ];
