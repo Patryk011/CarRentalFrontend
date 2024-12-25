@@ -30,7 +30,6 @@ import MenuInfo from "../Client/organisms/MenuInfo.vue";
 
 const navItems = ref([
   { name: "Wynajem auta", link: "/wynajem-auta" },
-  { name: "Flota", link: "/flota" },
   { name: "O nas", link: "/o-nas" },
   { name: "FAQ", link: "/faq" },
   { name: "Kontakt", link: "/kontakt" },
@@ -59,7 +58,7 @@ const navItems = ref([
       max-width: 1200px;
       align-items: center;
       margin: 0 auto;
-      padding: 10px 20px;
+      padding: 0.5em 2em;
 
       .navigation {
         display: flex;
