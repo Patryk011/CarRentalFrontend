@@ -1,9 +1,9 @@
 <template>
   <div>HOME</div>
-  <!-- <button @click="handlePayment">Pay now</button> -->
+  <button @click="handlePayment">Pay now</button>
 </template>
 
-<!-- <script setup lang="ts">
+<script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
@@ -48,4 +48,4 @@ const handlePayment = async () => {
     console.error("err", err);
   }
 };
-</script> -->
+</script>
