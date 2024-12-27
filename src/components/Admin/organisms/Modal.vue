@@ -32,7 +32,7 @@ const cancelAction = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -43,30 +43,30 @@ const cancelAction = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.modal-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 20px;
-  width: 400px;
-  text-align: center;
-}
+  .modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 400px;
+    text-align: center;
 
-.modal-actions button {
-  margin: 20px;
-  padding: 20px;
-  cursor: pointer;
-  border-radius: 7px;
-}
+    .modal-actions button {
+      margin: 20px;
+      padding: 20px;
+      cursor: pointer;
+      border-radius: 7px;
 
-.modal-actions button:first-child {
-  background-color: #808999;
-  color: white;
-}
+      &:first-child {
+        background-color: #808999;
+        color: white;
+      }
 
-.modal-actions button:last-child {
-  background-color: #f44336;
-  color: white;
+      &:last-child {
+        background-color: #f44336;
+        color: white;
+      }
+    }
+  }
 }
 </style>
