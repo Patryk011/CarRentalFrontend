@@ -5,7 +5,9 @@ export type TIconType =
   | "RightArrows"
   | "Home"
   | "Logout"
-  | "Users";
+  | "Users"
+  | "Rentals"
+  | "Car";
 
 export interface IIconProps {
   iconType: TIconType;

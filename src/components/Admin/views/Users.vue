@@ -1,31 +1,28 @@
 <template>
   <div class="users-container">
-    <div v-for="column in columns" :key="column.key">
-      {{ column.label }}
-      <div v-for="user in users" :key="user.id">
-        {{ user[column.key] }}
-      </div>
-    </div>
+    <Table :columns="columns" :data="users" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import usersData from "./pseudoData/Users.json";
 import { getToken } from "@/services/keycloak.service";
+import Table from "../organisms/Table/Table.vue";
 
-const users = ref([]);
+const users = ref(usersData);
 
 const columns = [
   { key: "id", label: "ID" },
-  { key: "firstName", label: "First Name" },
-  { key: "lastName", label: "Last Name" },
+  { key: "firstName", label: "Imię" },
+  { key: "lastName", label: "Nazwisko" },
   { key: "email", label: "Email" },
-  { key: "phoneNumber", label: "Phone Number" },
-  { key: "birthDate", label: "Birth Date" },
-  { key: "licenseNumber", label: "License Number" },
-  { key: "address", label: "Address" },
-  { key: "registrationDate", label: "Registration Date" },
+  { key: "phoneNumber", label: "Numer telefonu" },
+  { key: "birthDate", label: "Data urodzenia" },
+  { key: "licenseNumber", label: "Numer prawa jazdy" },
+  { key: "address", label: "Adres" },
+  { key: "registrationDate", label: "Data rejestracji" },
 ];
 
 const fetchUsers = async () => {
@@ -55,10 +52,3 @@ onMounted(() => {
   fetchUsers();
 });
 </script>
-
-<style lang="scss" scoped>
-.users-container {
-  display: flex;
-  gap: 2em;
-}
-</style>

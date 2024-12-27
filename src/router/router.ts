@@ -3,6 +3,8 @@ import ClientLayout from "@/components/Layouts/ClientLayout.vue";
 import HomeView from "@/components/Client/views/HomeView.vue";
 import AdminLayout from "@/components/Layouts/AdminLayout.vue";
 import Dashboard from "@/components/Admin/views/Dashboard.vue";
+import RentsView from "@/components/Admin/views/RentsView.vue";
+import CarsView from "@/components/Admin/views/CarsView.vue";
 import { useAuthStore } from "@/store/authStore";
 import Account from "@/components/Client/views/Account.vue";
 import Users from "@/components/Admin/views/Users.vue";
@@ -21,6 +23,8 @@ const routes = [
     component: AdminLayout,
     children: [
       { path: "", component: Dashboard },
+      { path: "wypozyczenia", component: RentsView },
+      { path: "auta", component: CarsView },
       { path: "users", component: Users },
     ],
     meta: { requiresAdmin: true },
