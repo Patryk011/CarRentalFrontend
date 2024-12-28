@@ -1,9 +1,6 @@
 <template>
   <div class="car-card">
-    <div class="header">
-      <h3 class="brand">TOYOTA YARIS</h3>
-      <span class="price">od 1421 zł / dzień</span>
-    </div>
+    <CardHeader :brand="'Toyota Yaris'" :price="'od 1421 zł / dzień'" />
     <div class="content">
       <img src="../../../../assets/cars/yaris.webp" alt="" />
       <CardInfo :items />
@@ -19,6 +16,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import CardInfo from "./CardInfo/CardInfo.vue";
+import CardHeader from "./CardHeader/CardHeader.vue";
 
 const items = ref([
   { key: "Skrzynia biegów", value: "Manualna" },
