@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import NavigationMenu from "../Client/organisms/NavigationMenu.vue";
+import NavigationMenu from "../Client/organisms/Navbar/NavigationMenu.vue";
 import Logo from "../Shared/atoms/Logo/Logo.vue";
-import MenuInfo from "../Client/organisms/MenuInfo.vue";
+import MenuInfo from "../Client/organisms/Navbar/MenuInfo.vue";
 
 const navItems = ref([
   { name: "Wynajem auta", link: "/wynajem-auta" },
