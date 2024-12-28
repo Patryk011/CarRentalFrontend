@@ -10,7 +10,7 @@
       <div class="separator" />
       <div class="offer-content">
         <CardInfo :items="additionals" :show-dot="true" />
-        <button class="offer">Zobacz oferte</button>
+        <button class="offer">Zobacz ofertę</button>
       </div>
     </div>
   </div>
@@ -36,6 +36,9 @@ const additionals = ref([
   },
   {
     value: "Brak limitu kilometrów",
+  },
+  {
+    value: "Elastyczność każdego dnia",
   },
 ]);
 </script>
@@ -75,7 +78,7 @@ const additionals = ref([
     .offer-content {
       display: flex;
       flex-direction: column;
-      gap: 1em;
+      gap: 1.5em;
 
       button {
         border: none;
