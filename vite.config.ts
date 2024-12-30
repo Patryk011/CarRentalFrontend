@@ -9,12 +9,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-  server: {
-    host: "car-rental.pl",
-    port: 5173,
-    https: {
-      key: "certs/car-rental.pl+2-key.pem",
-      cert: "certs/car-rental.pl+2.pem",
-    },
-  },
 });

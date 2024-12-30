@@ -54,7 +54,6 @@ const authActionText = computed(() => {
   display: flex;
   align-items: center;
   gap: 1.5em;
-  padding-right: 2em;
 
   .phone-contact {
     display: flex;

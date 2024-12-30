@@ -24,12 +24,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import NavigationMenu from "../Client/organisms/Navbar/NavigationMenu.vue";
+import NavigationMenu from "../Client/organisms/NavigationMenu.vue";
 import Logo from "../Shared/atoms/Logo/Logo.vue";
-import MenuInfo from "../Client/organisms/Navbar/MenuInfo.vue";
+import MenuInfo from "../Client/organisms/MenuInfo.vue";
 
 const navItems = ref([
   { name: "Wynajem auta", link: "/wynajem-auta" },
+  { name: "Flota", link: "/flota" },
   { name: "O nas", link: "/o-nas" },
   { name: "FAQ", link: "/faq" },
   { name: "Kontakt", link: "/kontakt" },
@@ -58,7 +59,7 @@ const navItems = ref([
       max-width: 1200px;
       align-items: center;
       margin: 0 auto;
-      padding: 0.5em 2em;
+      padding: 10px 20px;
 
       .navigation {
         display: flex;

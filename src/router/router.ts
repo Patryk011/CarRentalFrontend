@@ -8,7 +8,6 @@ import CarsView from "@/components/Admin/views/CarsView.vue";
 import { useAuthStore } from "@/store/authStore";
 import Account from "@/components/Client/views/Account.vue";
 import Users from "@/components/Admin/views/Users.vue";
-import RentView from "@/components/Client/views/RentView.vue";
 
 const routes = [
   {
@@ -17,7 +16,6 @@ const routes = [
     children: [
       { path: "", component: HomeView },
       { path: "account", component: Account, meta: { requiresAuth: true } },
-      { path: "wynajem-auta", component: RentView },
     ],
   },
   {
