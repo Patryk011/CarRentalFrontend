@@ -91,15 +91,15 @@ const additionals = ref([
 
     .separator {
       border-right: 1px solid #ddd;
-      height: auto; /* Adjusts to match the parent height */
-      margin: 0; /* Removes any margin issues */
+      height: auto;
+      margin: 0;
     }
 
     .offer-content {
       display: flex;
       flex-direction: column;
       gap: 1.5em;
-      flex-grow: 1; /* Fills available space to align properly */
+      flex-grow: 1;
 
       button {
         border: none;
