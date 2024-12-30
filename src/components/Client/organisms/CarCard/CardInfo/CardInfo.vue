@@ -17,9 +17,10 @@ defineProps<ICardInfoProps>();
   list-style: none;
   padding: 0.5em;
   margin: 0;
+  width: 20em;
 
   li {
-    padding-top: 0.7em;
+    padding-top: 1em;
 
     &.dotted::before {
       content: "●";

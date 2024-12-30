@@ -1,8 +1,14 @@
 <template>
   <div class="car-card">
-    <CardHeader :brand="'Toyota Yaris'" :price="'od 1421 zł / dzień'" />
+    <CardHeader
+      :brand="`${car.carBrandName} ${car.carModelName}`"
+      :price="`od ${(car.pricePerHour / 100) * 24} zł / dzień`"
+    />
     <div class="content">
-      <img src="../../../../assets/cars/yaris.webp" alt="" />
+      <img
+        :src="getCarImagePath(car.carBrandName, car.carModelName)"
+        alt="Car image"
+      />
       <CardInfo :items />
       <div class="separator" />
       <div class="offer-content">
@@ -17,12 +23,19 @@
 import { ref } from "vue";
 import CardInfo from "./CardInfo/CardInfo.vue";
 import CardHeader from "./CardHeader/CardHeader.vue";
+import { ICardProps } from "./Card.types";
+import { getCarImagePath, translate } from "@/utils/carUtils";
+
+const props = defineProps<ICardProps>();
+
+const { car } = props;
 
 const items = ref([
-  { key: "Skrzynia biegów", value: "Manualna" },
-  { key: "Ilość miejsc", value: "5 osobowy" },
-  { key: "Rodzaj paliwa", value: "Benzyna" },
-  { key: "Bagażnik", value: "3" },
+  { key: "Skrzynia biegów", value: translate(car.transmission) },
+  { key: "Ilość miejsc", value: `${car.seats} osobowy` },
+  { key: "Rodzaj paliwa", value: translate(car.fuelType) },
+  { key: "Rok produkcji", value: car.productionYear },
+  { key: "Pojemność silnika", value: (car.engineCapacity / 1000).toFixed(1) },
 ]);
 
 const additionals = ref([
@@ -43,10 +56,11 @@ const additionals = ref([
 
 <style lang="scss" scoped>
 .car-card {
-  padding: 1em 1em;
+  padding: 1em;
   background: #fff;
   margin: 0 auto;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.05);
+  width: 50%;
 
   .header {
     display: flex;
@@ -66,17 +80,26 @@ const additionals = ref([
 
   .content {
     display: flex;
+    align-items: stretch;
     font-size: 13px;
     gap: 2em;
 
+    img {
+      height: 200px;
+      width: 250px;
+    }
+
     .separator {
       border-right: 1px solid #ddd;
+      height: auto; /* Adjusts to match the parent height */
+      margin: 0; /* Removes any margin issues */
     }
 
     .offer-content {
       display: flex;
       flex-direction: column;
       gap: 1.5em;
+      flex-grow: 1; /* Fills available space to align properly */
 
       button {
         border: none;
@@ -86,7 +109,8 @@ const additionals = ref([
         font-size: 14px;
         font-weight: bold;
         cursor: pointer;
-        height: 50%;
+        height: 3em;
+        margin-top: auto;
       }
 
       .offer {

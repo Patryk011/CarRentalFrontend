@@ -1,6 +1,6 @@
 export interface ICardInfoItem {
-  key?: string;
-  value: string;
+  key?: string | number;
+  value: string | number;
 }
 
 export interface ICardInfoProps {
