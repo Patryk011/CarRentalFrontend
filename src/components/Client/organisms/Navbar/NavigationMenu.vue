@@ -21,13 +21,14 @@ defineProps<{
 <style lang="scss" scoped>
 .menu-navbar {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
   flex: 1;
   gap: 2.5em;
+  padding-left: 3em;
 
   .menu-link {
     text-decoration: none;
