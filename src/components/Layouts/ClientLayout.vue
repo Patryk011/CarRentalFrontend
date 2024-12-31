@@ -12,8 +12,9 @@
       </div>
     </header>
 
-    <main class="main-content"></main>
-    <router-view />
+    <main class="main-content">
+      <router-view />
+    </main>
     <footer>
       <div class="footer-container">
         &copy; 2024 Wypożyczalnia samochodów. Wszelkie prawa zastrzeżone.
@@ -47,10 +48,12 @@ const navItems = ref([
   .main-header {
     background-color: #ffffff;
     width: 100%;
+    height: 9.2%;
     position: fixed;
     top: 0;
     left: 0;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 10px 0px;
+    z-index: 99;
 
     .header-wrapper {
       display: flex;
@@ -64,8 +67,9 @@ const navItems = ref([
         display: flex;
         align-items: center;
         width: 100%;
+        height: 10%;
         justify-content: space-between;
-        padding-top: 20px;
+        padding-top: 1em;
       }
     }
   }

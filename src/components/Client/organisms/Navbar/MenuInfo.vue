@@ -78,7 +78,7 @@ const authActionText = computed(() => {
 
       a {
         color: #333;
-        padding: 10px 16px;
+        padding: 0.5em 1em;
         text-decoration: none;
         display: block;
         width: 10em;

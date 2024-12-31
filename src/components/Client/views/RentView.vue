@@ -1,4 +1,5 @@
 <template>
+  <Banner text="Wynajem auta" />
   <div class="cars"><Card v-for="car in cars" :key="car.id" :car /></div>
 </template>
 
@@ -7,6 +8,7 @@ import axios from "axios";
 import Card from "../organisms/CarCard/Card.vue";
 import { onMounted, ref } from "vue";
 import { ICar } from "../organisms/CarCard/Card.types";
+import Banner from "../atoms/Banner/Banner.vue";
 
 const cars = ref<ICar[]>();
 
@@ -30,5 +32,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 2em;
+  margin-top: 2em;
 }
 </style>

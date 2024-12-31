@@ -1,10 +1,10 @@
-const carImages = import.meta.glob("/src/assets/cars/*.{webp,png}");
+const carImages = import.meta.glob("/src/assets/cars/*.{webp,png,jpg}");
 
 export const getCarImagePath = (brand: string, model: string): string => {
   const normalizedBrand = brand.toLowerCase();
   const normalizedModel = model.toLowerCase();
 
-  for (const ext of ["webp", "png"]) {
+  for (const ext of ["webp", "png", "jpg"]) {
     const path = `/src/assets/cars/${normalizedBrand}-${normalizedModel}.${ext}`;
     if (carImages[path]) {
       return path;

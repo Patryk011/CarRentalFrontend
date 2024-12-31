@@ -34,7 +34,7 @@ defineProps<{
     text-decoration: none;
     font-weight: bold;
     color: #58595d;
-    padding: 10px 15px;
+    padding: 0.5em 1em;
 
     &:hover,
     &:focus {
