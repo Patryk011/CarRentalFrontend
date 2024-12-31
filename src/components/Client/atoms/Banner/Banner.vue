@@ -11,7 +11,7 @@ defineProps<IBannerProps>();
 <style lang="scss" scoped>
 .banner {
   width: 100%;
-  height: 3em;
+  padding: 1rem 0;
   margin-top: 4.8%;
   background: linear-gradient(90deg, #000000, #4e4c4c);
   color: white;
@@ -21,5 +21,6 @@ defineProps<IBannerProps>();
   font-size: 2rem;
   font-family: Arial, sans-serif;
   font-weight: bold;
+  text-align: center;
 }
 </style>

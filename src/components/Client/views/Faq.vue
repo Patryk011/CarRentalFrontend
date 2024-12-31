@@ -1,4 +1,5 @@
 <template>
+  <Banner text="FAQ" />
   <div class="faq-container">
     <h1>Najczęściej zadawane pytania</h1>
     <div class="faq-item" v-for="(item, index) in faqItems" :key="index">
@@ -15,6 +16,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import Banner from "../atoms/Banner/Banner.vue";
 
 interface FaqItem {
   question: string;
@@ -84,10 +86,9 @@ const toggle = (index: number) => {
 <style lang="scss" scoped>
 .faq-container {
   max-width: 50%;
-  margin: 4.5% auto 0 auto;
+  margin: 0 auto;
   padding: 2em;
   background-color: #f9f9f9;
-  border-radius: 1em;
 
   h1 {
     text-align: center;
