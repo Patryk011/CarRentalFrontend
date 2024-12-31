@@ -58,9 +58,7 @@ const additionals = ref([
 .car-card {
   padding: 1em;
   background: #fff;
-  margin: 0 auto;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.05);
-  width: 50%;
 
   .header {
     display: flex;

@@ -36,17 +36,16 @@ const moveToAccount = () => {
   router.push("account");
 };
 
-const handleAuthAction = () => {
-  return authStore.isAuthenticated ? authStore.logout() : authStore.register();
-};
+const handleAuthAction = () =>
+  authStore.isAuthenticated ? authStore.logout() : authStore.register();
 
-const accountLinkText = computed(() => {
-  return authStore.isAuthenticated ? "Moje konto" : "Zaloguj się";
-});
+const accountLinkText = computed(() =>
+  authStore.isAuthenticated ? "Moje konto" : "Zaloguj się"
+);
 
-const authActionText = computed(() => {
-  return authStore.isAuthenticated ? "Wyloguj się" : "Zarejestruj się";
-});
+const authActionText = computed(() =>
+  authStore.isAuthenticated ? "Wyloguj się" : "Zarejestruj się"
+);
 </script>
 
 <style lang="scss" scoped>
@@ -78,7 +77,7 @@ const authActionText = computed(() => {
 
       a {
         color: #333;
-        padding: 10px 16px;
+        padding: 0.5em 1em;
         text-decoration: none;
         display: block;
         width: 10em;

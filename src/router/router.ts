@@ -9,6 +9,8 @@ import { useAuthStore } from "@/store/authStore";
 import Account from "@/components/Client/views/Account.vue";
 import Users from "@/components/Admin/views/Users.vue";
 import RentView from "@/components/Client/views/RentView.vue";
+import About from "@/components/Client/views/About.vue";
+import Faq from "@/components/Client/views/Faq.vue";
 
 const routes = [
   {
@@ -18,6 +20,8 @@ const routes = [
       { path: "", component: HomeView },
       { path: "account", component: Account, meta: { requiresAuth: true } },
       { path: "wynajem-auta", component: RentView },
+      { path: "o-nas", component: About },
+      { path: "faq", component: Faq },
     ],
   },
   {
