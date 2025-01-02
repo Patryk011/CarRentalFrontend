@@ -46,16 +46,17 @@ const cancelAction = () => {
 
   .modal-content {
     background-color: white;
-    padding: 30px;
-    border-radius: 20px;
-    width: 400px;
+    font-family: Arial;
+    padding: 1.875rem;
+    border-radius: 1.25rem;
+    width: 25rem;
     text-align: center;
 
     .modal-actions button {
-      margin: 20px;
-      padding: 20px;
+      margin: 0.75rem;
+      padding: 0.75rem;
       cursor: pointer;
-      border-radius: 7px;
+      border-radius: 0.5rem;
 
       &:first-child {
         background-color: #808999;
