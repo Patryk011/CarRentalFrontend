@@ -1,5 +1,5 @@
 <template>
-  <div>HOME</div>
+  <Banner text="Wypożycz auto dopasowane do siebie" />
   <button @click="handlePayment">Pay now</button>
 </template>
 
@@ -7,6 +7,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
+import Banner from "../atoms/Banner/Banner.vue";
 
 async function createPayment(paymentData) {
   try {
@@ -49,3 +50,8 @@ const handlePayment = async () => {
   }
 };
 </script>
+<style lang="scss" scoped>
+button {
+  margin-top: 10em;
+}
+</style>

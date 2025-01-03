@@ -2,7 +2,7 @@
   <div class="car-card">
     <CardHeader
       :brand="`${car.carBrandName} ${car.carModelName}`"
-      :price="`od ${(car.pricePerHour / 100) * 24} zł / dzień`"
+      :price="`od ${car.pricePerDay * 10} zł / dzień`"
     />
     <div class="content">
       <img
