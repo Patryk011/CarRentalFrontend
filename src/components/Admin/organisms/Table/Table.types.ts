@@ -4,6 +4,7 @@ export interface ITableColumn {
 }
 
 export interface ITableData {
+  id: number;
   [key: string]: any;
 }
 

@@ -1,4 +1,14 @@
 <template>
+  <div class="search-container">
+    <input
+      type="text"
+      v-model="searchQuery"
+      class="search-input"
+      placeholder="Wyszukaj w tabeli..."
+    />
+    <button class="clear-button" @click="clearSearch">Wyczyść</button>
+  </div>
+
   <table class="table">
     <thead>
       <tr class="table-header">
@@ -12,11 +22,11 @@
             {{ sortDirection === "asc" ? "↑" : "↓" }}
           </span>
         </th>
-        <th>Actions</th>
+        <th>Edytuj</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in sortedData" :key="item.id">
+      <tr v-for="item in filteredData" :key="item.id">
         <td v-for="column in columns" :key="column.key">
           {{ item[column.key] }}
         </td>
@@ -39,10 +49,18 @@
 <script setup lang="ts">
 import { defineProps, ref, computed } from "vue";
 import Modal from "../Modal.vue"; //
-import { ITableProps } from "./Table.types";
 import { useSorting } from "@/composables/useSorting";
 
-const props = defineProps<ITableProps>();
+interface TableRow {
+  id: number;
+  [key: string]: any;
+}
+
+const props = defineProps<{
+  columns: { key: string; label: string }[];
+  data: TableRow[];
+}>();
+
 const { columns, data } = props;
 
 const isModalVisible = ref(false);
@@ -50,6 +68,24 @@ const recordToDelete = ref<number | null>(null);
 
 const { sortedData, sortColumn, setSortDirection, sortDirection } =
   useSorting(data);
+
+const searchQuery = ref("");
+
+const filteredData = computed<TableRow[]>(() => {
+  if (!searchQuery.value) return sortedData.value;
+
+  const query = searchQuery.value.toLowerCase();
+
+  return sortedData.value.filter((item) =>
+    Object.values(item).some((value) =>
+      String(value).toLowerCase().includes(query)
+    )
+  );
+});
+
+const clearSearch = () => {
+  searchQuery.value = "";
+};
 
 const openModal = (id: number) => {
   recordToDelete.value = id;
@@ -73,12 +109,36 @@ const deleteUser = () => {
 </script>
 
 <style lang="scss" scoped>
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.0625rem;
+
+  .search-input {
+    flex-grow: 1;
+  }
+
+  .clear-button {
+    background-color: #eceaea;
+    color: rgb(182, 58, 58);
+    border: 0.5rem;
+    padding: 0.5rem 0.9375rem;
+    cursor: pointer;
+    border-radius: 0.125rem;
+    font-size: 0.75rem;
+
+    &:hover {
+      background-color: #adacaa;
+    }
+  }
+}
 .table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   text-align: left;
-  min-width: 800px;
+  min-width: 50rem;
 
   .table-header {
     background-color: #f5f5f5;
@@ -88,8 +148,8 @@ const deleteUser = () => {
 
   th,
   td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: 0.0625rem solid #ddd;
+    padding: 0.625rem;
   }
 
   th {
@@ -97,8 +157,8 @@ const deleteUser = () => {
   }
 
   .sort-indicator {
-    margin-left: 8px;
-    font-size: 12px;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
     color: #666;
   }
 
@@ -116,9 +176,9 @@ const deleteUser = () => {
     background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 0.3125rem 0.625rem;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 
     &:hover {
       background-color: #c0392b;
