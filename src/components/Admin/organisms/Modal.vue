@@ -59,7 +59,7 @@ const cancelAction = () => {
       border-radius: 0.5rem;
 
       &:first-child {
-        background-color: #808999;
+        background-color: #1e1f20;
         color: white;
       }
 
