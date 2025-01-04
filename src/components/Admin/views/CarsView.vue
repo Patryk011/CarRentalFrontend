@@ -2,9 +2,11 @@
   <div class="cars-container">
     <button @click="openModal" class="add-car-button">Dodaj auto</button>
     <Table :columns="columns" :data="cars" />
-    <CarForm
+    <FormsField
       v-if="isModalVisible"
-      @car-added="addCar"
+      :formTitle="'Dodaj nowe auto'"
+      :formFields="formFields"
+      @form-submitted="addCar"
       @close-modal="closeModal"
     />
   </div>
@@ -16,10 +18,20 @@ import carsData from "./pseudoData/Cars.json";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
 import Table from "../organisms/Table/Table.vue";
-import CarForm from "../organisms/CarForm.vue";
+import FormsField from "../organisms/FormsFields/FormsField.vue";
+import { Car, formFields } from "../organisms/FormsFields/CarFormFields";
+import {
+  openModal,
+  closeModal,
+  isModalVisible,
+} from "../organisms/Modal/ModalService";
 
-const cars = ref(carsData);
-const isModalVisible = ref(false);
+const cars = ref<Car[]>(
+  carsData.map((car) => ({
+    ...car,
+    productionYear: Number(car.productionYear),
+  })) as Car[]
+);
 
 const columns = [
   { key: "id", label: "ID" },
@@ -56,32 +68,34 @@ const fetchCars = async () => {
     });
     cars.value = response.data;
   } catch (err) {
-    console.error("Error fetching cars: ", err);
+    console.error("Błąd przy pobieraniu danych: ", err);
   }
 };
 
-const openModal = () => {
-  isModalVisible.value = true;
-};
+const addCar = async (newCar: Car) => {
+  try {
+    const token = getToken();
 
-const closeModal = () => {
-  isModalVisible.value = false;
-};
+    if (!token) {
+      console.error("No keycloak token");
+      return;
+    }
 
-const addCar = (newCar: any) => {
-  axios
-    .post("http://localhost:8081/api/cars", newCar, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    })
-    .then((response) => {
-      cars.value.push(response.data);
-      closeModal();
-    })
-    .catch((err) => {
-      console.error("Błąd dodawania auta:", err);
-    });
+    const response = await axios.post<Car>(
+      "http://localhost:8081/api/cars",
+      newCar,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    cars.value.push(response.data);
+    closeModal();
+  } catch (err) {
+    console.error("Błąd dodawania auta: ", err);
+  }
 };
 
 onMounted(() => {
