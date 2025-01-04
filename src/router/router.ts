@@ -24,6 +24,11 @@ const routes = [
       { path: "o-nas", component: About },
       { path: "faq", component: Faq },
       { path: "kontakt", component: Contact },
+      {
+        path: "rental-details/:id",
+        component: () => import("@/components/Client/views/RentalDetails.vue"),
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {

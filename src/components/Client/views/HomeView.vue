@@ -1,54 +1,46 @@
 <template>
   <Banner text="Wypożycz auto dopasowane do siebie" />
-  <button @click="handlePayment">Pay now</button>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
 import Banner from "../atoms/Banner/Banner.vue";
 
-async function createPayment(paymentData) {
+const user = ref(null);
+
+async function getCurrentUser() {
   try {
     const token = getToken();
-
     if (!token) {
-      console.error("No keycloak token");
+      console.error("No Keycloak token");
       return;
     }
 
-    const response = await axios.post(
-      "http://localhost:8081/api/payments",
-      paymentData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
+    const response = await fetch("http://localhost:8081/api/users/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching user data: ${response.statusText}`);
+    }
+
+    const user = await response.json();
+    console.log("User data:", user);
+    return user;
   } catch (err) {
-    console.error("Erorr payment ", err);
-    throw err;
+    console.error("Error fetching current user:", err);
   }
 }
 
-const handlePayment = async () => {
-  try {
-    const paymentData = {
-      amount: 110,
-      customerEmail: "test1@test1.pl",
-      description: "Rental payment",
-    };
-
-    const { orderId, redirectUri } = await createPayment(paymentData);
-    window.location = redirectUri;
-  } catch (err) {
-    console.error("err", err);
-  }
-};
+onMounted(() => {
+  getCurrentUser();
+});
 </script>
 <style lang="scss" scoped>
 button {
