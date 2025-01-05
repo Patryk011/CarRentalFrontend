@@ -219,5 +219,49 @@ const additionals = ref([
       }
     }
   }
+
+  .modal-body-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em;
+
+    label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    input[type="date"] {
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      width: 100%;
+      box-sizing: border-box;
+      transition: (border-color 0.2s ease);
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .rent-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.75em 1.5em;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: (background-color 0.2s ease);
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
 }
 </style>

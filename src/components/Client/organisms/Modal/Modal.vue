@@ -30,47 +30,66 @@ defineProps({
 const emits = defineEmits(["close"]);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
 .modal-content {
-  background: #fff;
+  background: #ffffff;
   width: 90%;
   max-width: 500px;
-  margin: 100px auto;
-  padding: 1.5em;
-  border-radius: 0.3em;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 
-.modal-close {
-  background: transparent;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-}
+  .modal-header {
+    padding: 1em 1.5em;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
 
-.modal-header {
-  margin-bottom: 1em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    h3 {
+      margin: 0;
+      font-size: 1.25em;
+      color: #333;
+    }
 
-.modal-body {
-  margin-bottom: 1em;
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 1.5em;
+      color: #666;
+      cursor: pointer;
+      transition: (color 0.2s ease);
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  .modal-footer {
+    padding: 1em 1.5em;
+    background-color: #f5f5f5;
+  }
 }
 </style>
