@@ -16,7 +16,7 @@
         <button class="offer" @click="openModal">Zobacz ofertę</button>
       </div>
     </div>
-    <Modal :show="showModal" @close="showModal = false">
+    <RentModal :show="showModal" @close="showModal = false">
       <template #header>
         <h3>Wybierz daty wynajmu</h3>
       </template>
@@ -34,7 +34,7 @@
       <template #footer>
         <button class="rent-button" @click="createRental">Zarezerwuj</button>
       </template>
-    </Modal>
+    </RentModal>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ import CardInfo from "./CardInfo/CardInfo.vue";
 import CardHeader from "./CardHeader/CardHeader.vue";
 import { ICardProps } from "./Card.types";
 import { getCarImagePath, translate } from "@/utils/carUtils";
-import Modal from "../Modal/Modal.vue";
+import RentModal from "../../molecules/RentModal/RentModal.vue";
 import { getToken } from "@/services/keycloak.service";
 import axios from "axios";
 
