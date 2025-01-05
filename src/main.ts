@@ -3,6 +3,7 @@ import App from "./App.vue";
 import { createPinia } from "pinia";
 import router from "../src/router/router";
 import { initKeycloak } from "./services/keycloak.service";
+import "./style.css";
 
 // Function that cleans the 'error' from a URL that doesn't exist.
 const cleanUrl = () => {

@@ -2,7 +2,7 @@ export interface ICar {
   id: number;
   carBrandName: string;
   carModelName: string;
-  pricePerHour: number;
+  pricePerDay: number;
   transmission: string;
   seats: number;
   fuelType: string;

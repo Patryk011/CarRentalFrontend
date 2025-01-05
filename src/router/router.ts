@@ -11,6 +11,7 @@ import Users from "@/components/Admin/views/Users.vue";
 import RentView from "@/components/Client/views/RentView.vue";
 import About from "@/components/Client/views/About.vue";
 import Faq from "@/components/Client/views/Faq.vue";
+import Contact from "@/components/Client/views/Contact.vue";
 
 const routes = [
   {
@@ -22,6 +23,12 @@ const routes = [
       { path: "wynajem-auta", component: RentView },
       { path: "o-nas", component: About },
       { path: "faq", component: Faq },
+      { path: "kontakt", component: Contact },
+      {
+        path: "rental-details/:id",
+        component: () => import("@/components/Client/views/RentalDetails.vue"),
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {
