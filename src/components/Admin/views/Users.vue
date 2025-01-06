@@ -4,9 +4,11 @@
       Dodaj nowego użytkownika
     </button>
     <Table :columns="columns" :data="users" />
-    <AddUserModal
+    <FormsField
       v-if="isModalVisible"
-      @user-added="addUser"
+      :formTitle="'Dodaj nowego użytkownika'"
+      :formFields="formFields"
+      @form-submitted="addUser"
       @close-modal="closeModal"
     />
   </div>
@@ -18,10 +20,15 @@ import axios from "axios";
 import usersData from "./pseudoData/Users.json";
 import { getToken } from "@/services/keycloak.service";
 import Table from "../organisms/Table/Table.vue";
-import AddUserModal from "../organisms/UserForm.vue";
+import FormsField from "../organisms/FormsFields/FormsField.vue";
+import { User, formFields } from "../organisms/FormsFields/UserFormFields";
+import {
+  openModal,
+  closeModal,
+  isModalVisible,
+} from "../organisms/Modal/ModalService";
 
-const users = ref(usersData);
-const isModalVisible = ref(false);
+const users = ref<User[]>(usersData);
 
 const columns = [
   { key: "id", label: "ID" },
@@ -44,7 +51,7 @@ const fetchUsers = async () => {
       return;
     }
 
-    const response = await axios.get(
+    const response = await axios.get<User[]>(
       "http://localhost:8081/api/customers/all",
       {
         headers: {
@@ -54,33 +61,39 @@ const fetchUsers = async () => {
     );
     users.value = response.data;
   } catch (err) {
-    console.error("Error fetching users: ", err);
+    console.error("Błąd przy pobieraniu danych: ", err);
   }
 };
 
-const openModal = () => {
-  isModalVisible.value = true;
+const addUser = async (newUser: User) => {
+  try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("No keycloak token");
+      return;
+    }
+
+    const response = await axios.post<User>(
+      "http://localhost:8081/api/users",
+      newUser,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    users.value.push(response.data);
+    closeModal();
+  } catch (err) {
+    console.error("Błąd dodawania użytkownika:", err);
+  }
 };
 
-const closeModal = () => {
-  isModalVisible.value = false;
-};
-
-const addUser = async (newUser: any) => {
-  axios
-    .post("http://localhost:8081/api/users", newUser, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    })
-    .then((response) => {
-      users.value.push(response.data);
-      closeModal();
-    })
-    .catch((err) => {
-      console.error("Błąd dodawania użytkownika:", err);
-    });
-};
+onMounted(() => {
+  fetchUsers();
+});
 </script>
 
 <style scoped>

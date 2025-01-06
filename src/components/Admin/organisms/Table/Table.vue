@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { defineProps, ref, computed } from "vue";
-import Modal from "../Modal.vue"; //
+import Modal from "../Modal/Modal.vue"; //
 import { useSorting } from "@/composables/useSorting";
 
 interface TableRow {
