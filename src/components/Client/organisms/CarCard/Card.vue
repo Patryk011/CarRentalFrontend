@@ -48,6 +48,12 @@ import RentModal from "../../molecules/RentModal/RentModal.vue";
 import { getToken } from "@/services/keycloak.service";
 import axios from "axios";
 
+interface RentalDataForEmail {
+  id: string;
+  startDate: string;
+  finishDate: string;
+}
+
 const showModal = ref(false);
 const startDate = ref("");
 const finishDate = ref("");
@@ -93,6 +99,31 @@ onMounted(() => {
   getCurrentUser();
 });
 
+const sendConfirmationEmail = async (data: RentalDataForEmail) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error("No Keycloak token");
+      return;
+    }
+
+    const emailRequest = {
+      toEmail: user.value.email,
+      subject: `Potwierdzenie rezerwacji nr ${data.id}`,
+      body: `Informujemy, że rezerwacja nr ${data.id} będzie ważna w dniach od ${data.startDate} do ${data.finishDate}.`,
+    };
+
+    await axios.post("http://localhost:8081/api/email/send", emailRequest, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.error("Error sending email:", err);
+  }
+};
+
 const createRental = async () => {
   try {
     const token = getToken();
@@ -119,7 +150,10 @@ const createRental = async () => {
     );
 
     const rental = response.data;
+
     console.log("Rental created:", rental);
+
+    await sendConfirmationEmail(rental);
 
     showModal.value = false;
 
