@@ -45,6 +45,9 @@ interface RentalDTO {
   status: string;
   totalCost: number;
   discountPercentage: number;
+  carModel: string;
+  carBrand: string;
+  registrationNumber: string;
 }
 
 const route = useRoute();
@@ -168,9 +171,13 @@ const rentailsDetails = computed(() => {
   if (!rental.value) return [];
 
   return [
-    { label: "Car ID:", value: rental.value.carId },
-    { label: "Start:", value: rental.value.startDate },
-    { label: "End:", value: rental.value.finishDate },
+    { label: "Numer rejestracyjny:", value: rental.value.registrationNumber },
+    {
+      label: "Model:",
+      value: rental.value.carBrand + " " + rental.value.carModel,
+    },
+    { label: "Rozpoczęcie", value: rental.value.startDate },
+    { label: "Zakończenie:", value: rental.value.finishDate },
   ];
 });
 </script>
