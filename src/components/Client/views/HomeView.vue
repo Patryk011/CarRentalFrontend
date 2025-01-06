@@ -377,7 +377,7 @@ import Banner from "../atoms/Banner/Banner.vue";
 
     .cta-button {
       background-color: #fff;
-      color: #ff7f50;
+      color: #d62c2c;
       border: none;
       padding: 15px 30px;
       border-radius: 5px;
@@ -386,8 +386,7 @@ import Banner from "../atoms/Banner/Banner.vue";
       transition: background-color 0.3s, color 0.3s, transform 0.3s;
 
       &:hover {
-        background-color: #ffe5d9;
-        color: #ff5722;
+        color: #fd2600;
         transform: translateY(-2px);
       }
 
