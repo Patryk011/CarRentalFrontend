@@ -22,7 +22,7 @@
             {{ sortDirection === "asc" ? "↑" : "↓" }}
           </span>
         </th>
-        <th>Edytuj</th>
+        <th v-if="actions">Akcje</th>
       </tr>
     </thead>
     <tbody>
@@ -30,9 +30,14 @@
         <td v-for="column in columns" :key="column.key">
           {{ item[column.key] }}
         </td>
-        <td>
-          <button class="delete-button" @click="openModal(item.id)">
-            Usuń
+        <td v-if="actions">
+          <button
+            v-for="(action, actionIndex) in actions(item)"
+            :key="actionIndex"
+            :class="action.class"
+            @click="() => action.onClick(item)"
+          >
+            {{ action.label }}
           </button>
         </td>
       </tr>
@@ -47,31 +52,26 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from "vue";
+import { defineProps, ref, computed, watch } from "vue";
 import Modal from "../Modal/Modal.vue"; //
 import { useSorting } from "@/composables/useSorting";
+import { ITableData, ITableProps } from "./Table.types";
 
-interface TableRow {
-  id: number;
-  [key: string]: any;
-}
+const props = defineProps<ITableProps>();
 
-const props = defineProps<{
-  columns: { key: string; label: string }[];
-  data: TableRow[];
-}>();
+const { columns } = props;
 
-const { columns, data } = props;
+const tableData = ref<ITableData[]>(props.data);
 
 const isModalVisible = ref(false);
 const recordToDelete = ref<number | null>(null);
 
 const { sortedData, sortColumn, setSortDirection, sortDirection } =
-  useSorting(data);
+  useSorting(tableData);
 
 const searchQuery = ref("");
 
-const filteredData = computed<TableRow[]>(() => {
+const filteredData = computed<ITableData[]>(() => {
   if (!searchQuery.value) return sortedData.value;
 
   const query = searchQuery.value.toLowerCase();
@@ -100,12 +100,21 @@ const closeModal = () => {
 const deleteUser = () => {
   if (recordToDelete.value === null) return;
 
-  const index = data.findIndex((item) => item.id === recordToDelete.value);
+  const index = tableData.value.findIndex(
+    (item) => item.id === recordToDelete.value
+  );
 
-  if (index !== -1) data.splice(index, 1);
+  if (index !== -1) tableData.value.splice(index, 1);
 
   closeModal();
 };
+
+watch(
+  () => props.data,
+  (newData) => {
+    tableData.value = newData;
+  }
+);
 </script>
 
 <style lang="scss" scoped>

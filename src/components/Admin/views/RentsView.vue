@@ -3,7 +3,7 @@
     <button @click="openModal" class="add-rental-button">
       Dodaj wypożyczenie
     </button>
-    <Table :columns="columns" :data="rentals" />
+    <Table :columns="columns" :data="rentals" :actions />
 
     <DynamicForm
       v-if="isModalVisible"
@@ -21,7 +21,6 @@ import axios from "axios";
 import Table from "../organisms/Table/Table.vue";
 import DynamicForm from "../organisms/FormsFields/FormsField.vue";
 import { getToken } from "@/services/keycloak.service";
-import rentalData from "./pseudoData/Rentals.json";
 import { Rental, formFields } from "../organisms/FormsFields/RentFormFields";
 import {
   openModal,
@@ -29,11 +28,14 @@ import {
   isModalVisible,
 } from "../organisms/Modal/ModalService";
 
-const rentals = ref<Rental[]>(rentalData);
+const rentals = ref([]);
 
 const columns = [
   { key: "id", label: "ID" },
   { key: "customerId", label: "ID Klienta" },
+  { key: "carBrand", label: "Marka" },
+  { key: "carModel", label: "Model" },
+  { key: "totalCost", label: "cena" },
   { key: "carId", label: "ID Samochodu" },
   { key: "startDate", label: "Data rozpoczęcia" },
   { key: "finishDate", label: "Data zakończenia" },
@@ -58,9 +60,22 @@ const fetchRentals = async () => {
       }
     );
     rentals.value = response.data;
+    console.log(rentals.value);
   } catch (err) {
     console.error("Błąd przy pobieraniu danych: ", err);
   }
+};
+
+const actions = (item) => [
+  {
+    label: "Action / totalCost Log",
+    onClick: () => handleAction(item),
+    class: "example",
+  },
+];
+
+const handleAction = (item) => {
+  console.log(item.totalCost);
 };
 
 const addRental = async (newRental: Rental) => {
@@ -94,22 +109,37 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .rentals-container {
   padding: 2rem;
-}
 
-.add-rental-button {
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-}
+  .add-rental-button {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
 
-.add-rental-button:hover {
-  background-color: #0056b3;
+  .add-rental-button:hover {
+    background-color: #0056b3;
+  }
+
+  :deep(.example) {
+    background: orange;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 0.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+      background: rgb(190, 128, 12);
+    }
+  }
 }
 </style>
