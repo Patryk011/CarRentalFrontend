@@ -3,7 +3,7 @@
     <button @click="openModal" class="add-rental-button">
       Dodaj wypożyczenie
     </button>
-    <Table :columns="columns" :data="rentals" />
+    <Table :columns="columns" :data="rentals" :actions />
 
     <DynamicForm
       v-if="isModalVisible"
@@ -21,7 +21,6 @@ import axios from "axios";
 import Table from "../organisms/Table/Table.vue";
 import DynamicForm from "../organisms/FormsFields/FormsField.vue";
 import { getToken } from "@/services/keycloak.service";
-import rentalData from "./pseudoData/Rentals.json";
 import { Rental, formFields } from "../organisms/FormsFields/RentFormFields";
 import {
   openModal,
@@ -67,6 +66,18 @@ const fetchRentals = async () => {
   }
 };
 
+const actions = (item) => [
+  {
+    label: "Action / totalCost Log",
+    onClick: () => handleAction(item),
+    class: "example",
+  },
+];
+
+const handleAction = (item) => {
+  console.log(item.totalCost);
+};
+
 const addRental = async (newRental: Rental) => {
   try {
     const token = getToken();
@@ -98,22 +109,37 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .rentals-container {
   padding: 2rem;
-}
 
-.add-rental-button {
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-}
+  .add-rental-button {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
 
-.add-rental-button:hover {
-  background-color: #0056b3;
+  .add-rental-button:hover {
+    background-color: #0056b3;
+  }
+
+  :deep(.example) {
+    background: orange;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 0.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+      background: rgb(190, 128, 12);
+    }
+  }
 }
 </style>

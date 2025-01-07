@@ -30,9 +30,14 @@
         <td v-for="column in columns" :key="column.key">
           {{ item[column.key] }}
         </td>
-        <td>
-          <button class="delete-button" @click="openModal(item.id)">
-            Usuń
+        <td v-if="actions">
+          <button
+            v-for="(action, actionIndex) in actions(item)"
+            :key="actionIndex"
+            :class="action.class"
+            @click="() => action.onClick(item)"
+          >
+            {{ action.label }}
           </button>
         </td>
       </tr>

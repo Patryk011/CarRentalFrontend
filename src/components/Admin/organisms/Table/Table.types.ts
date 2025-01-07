@@ -11,6 +11,7 @@ export interface ITableData {
 export interface ITableActions {
   label: string;
   onClick: (item) => void;
+  class?: string;
 }
 
 export interface ITableProps {
