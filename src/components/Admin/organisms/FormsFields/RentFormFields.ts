@@ -5,6 +5,8 @@ export interface Rental {
   startDate: string;
   finishDate: string;
   status: string;
+  totalCost: number;
+  discountPercentage: number;
 }
 
 export const formFields = [

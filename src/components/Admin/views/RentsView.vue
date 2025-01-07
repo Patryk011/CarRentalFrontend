@@ -29,11 +29,14 @@ import {
   isModalVisible,
 } from "../organisms/Modal/ModalService";
 
-const rentals = ref<Rental[]>(rentalData);
+const rentals = ref([]);
 
 const columns = [
   { key: "id", label: "ID" },
   { key: "customerId", label: "ID Klienta" },
+  { key: "carBrand", label: "Marka" },
+  { key: "carModel", label: "Model" },
+  { key: "totalCost", label: "cena" },
   { key: "carId", label: "ID Samochodu" },
   { key: "startDate", label: "Data rozpoczęcia" },
   { key: "finishDate", label: "Data zakończenia" },
@@ -58,6 +61,7 @@ const fetchRentals = async () => {
       }
     );
     rentals.value = response.data;
+    console.log(rentals.value);
   } catch (err) {
     console.error("Błąd przy pobieraniu danych: ", err);
   }

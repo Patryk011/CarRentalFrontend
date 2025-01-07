@@ -8,7 +8,13 @@ export interface ITableData {
   [key: string]: any;
 }
 
+export interface ITableActions {
+  label: string;
+  onClick: (item) => void;
+}
+
 export interface ITableProps {
   columns: ITableColumn[];
   data: ITableData[];
+  actions?: (item) => ITableActions[];
 }
