@@ -12,10 +12,11 @@ export interface ITableActions {
   label: string;
   onClick: (item) => void;
   class?: string;
+  visible?: boolean;
 }
 
 export interface ITableProps {
   columns: ITableColumn[];
   data: ITableData[];
-  actions?: (item) => ITableActions[];
+  actions?: (item: ITableData) => ITableActions[];
 }

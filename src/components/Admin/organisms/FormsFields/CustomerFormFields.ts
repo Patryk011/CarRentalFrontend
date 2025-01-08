@@ -1,4 +1,4 @@
-export interface User {
+export interface Customer {
   id: number;
   firstName: string;
   lastName: string;
@@ -8,6 +8,8 @@ export interface User {
   licenseNumber: string;
   address: string;
   registrationDate: string;
+  discountPercentage: number;
+  keycloakId: number;
 }
 
 export const formFields = [
@@ -27,6 +29,12 @@ export const formFields = [
     name: "registrationDate",
     label: "Data rejestracji",
     type: "date",
+    required: true,
+  },
+  {
+    name: "discountPercentage",
+    label: "Zniżka",
+    type: "number",
     required: true,
   },
 ];

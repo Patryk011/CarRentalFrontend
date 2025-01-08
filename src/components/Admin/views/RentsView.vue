@@ -21,14 +21,14 @@ import axios from "axios";
 import Table from "../organisms/Table/Table.vue";
 import DynamicForm from "../organisms/FormsFields/FormsField.vue";
 import { getToken } from "@/services/keycloak.service";
-import { Rental, formFields } from "../organisms/FormsFields/RentFormFields";
+import { Rental, formFields } from "../organisms/FormsFields/RentalFormFields";
 import {
   openModal,
   closeModal,
   isModalVisible,
 } from "../organisms/Modal/ModalService";
 
-const rentals = ref([]);
+const rentals = ref<Rental[]>([]);
 
 const columns = [
   { key: "id", label: "ID" },
@@ -39,6 +39,7 @@ const columns = [
   { key: "carId", label: "ID Samochodu" },
   { key: "startDate", label: "Data rozpoczęcia" },
   { key: "finishDate", label: "Data zakończenia" },
+  { key: "totalCost", label: "Koszt" },
   { key: "status", label: "Status" },
 ];
 
@@ -104,6 +105,27 @@ const addRental = async (newRental: Rental) => {
   }
 };
 
+const deleteRental = async (rental: Rental) => {
+  try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("No keycloak token");
+      return;
+    }
+
+    await axios.delete(`http://localhost:8081/api/rentals/${rental.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    rentals.value = rentals.value.filter((r) => r.id !== rental.id);
+  } catch (err) {
+    console.error("Błąd usuwania wypożyczenia: ", err);
+  }
+};
+
 onMounted(() => {
   fetchRentals();
 });
@@ -141,5 +163,19 @@ onMounted(() => {
       background: rgb(190, 128, 12);
     }
   }
+}
+
+.table .button {
+  margin-bottom: 0.5rem; /* Dodaj margines dolny */
+  padding: 0.5rem 1rem; /* Zwiększ padding */
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #007bff; /* Zmień kolor tła na niebieski */
+  color: white;
+  cursor: pointer;
+}
+
+.table .button:hover {
+  background-color: #0056b3; /* Ciemniejszy niebieski po najechaniu */
 }
 </style>

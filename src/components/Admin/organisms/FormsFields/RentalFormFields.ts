@@ -31,4 +31,11 @@ export const formFields = [
     required: true,
     options: ["W trakcie", "Zakończone", "Anulowane"],
   },
+  { name: "totalCost", label: "Koszt wynajmu", type: "number", required: true },
+  {
+    name: "discountPercentage",
+    label: "Zniżka",
+    type: "number",
+    required: true,
+  },
 ];

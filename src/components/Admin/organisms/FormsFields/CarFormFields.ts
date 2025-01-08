@@ -1,20 +1,16 @@
-export interface Car {
+export interface CarDTO {
   id: number;
-  registrationNumber: string;
-  brand: string;
-  model: string;
-  purchaseDate: string;
-  state: string;
-  vin: string;
-  productionYear: number;
-  color: string;
-  pricePerHour: number;
+  carBrandName: string;
+  carModelName: string;
+  pricePerDay: number;
   transmission: string;
-  fuelType: string;
   seats: number;
-  lastServiceDate: string;
-  nextServiceDate: string;
+  fuelType: string;
   engineCapacity: number;
+  productionYear: number;
+  color?: string;
+  vin?: string;
+  state: string;
 }
 
 export const formFields = [
@@ -24,9 +20,8 @@ export const formFields = [
     type: "text",
     required: true,
   },
-  { name: "brand", label: "Marka", type: "text", required: true },
-  { name: "model", label: "Model", type: "text", required: true },
-  { name: "purchaseDate", label: "Data zakupu", type: "date", required: true },
+  { name: " carBrandName", label: "Marka", type: "text", required: true },
+  { name: " carModelName", label: "Model", type: "text", required: true },
   {
     name: "state",
     label: "Stan",
@@ -43,8 +38,8 @@ export const formFields = [
   },
   { name: "color", label: "Kolor", type: "text", required: true },
   {
-    name: "pricePerHour",
-    label: "Cena za godzinę",
+    name: "pricePerDay",
+    label: "Cena za dzień",
     type: "number",
     required: true,
   },
@@ -63,18 +58,6 @@ export const formFields = [
     options: ["Benzyna", "Diesel", "Hybryda", "Elektryk"],
   },
   { name: "seats", label: "Ilość miejsc", type: "number", required: true },
-  {
-    name: "lastServiceDate",
-    label: "Ostatni serwis",
-    type: "date",
-    required: true,
-  },
-  {
-    name: "nextServiceDate",
-    label: "Następny serwis",
-    type: "date",
-    required: true,
-  },
   {
     name: "engineCapacity",
     label: "Pojemność silnika",
