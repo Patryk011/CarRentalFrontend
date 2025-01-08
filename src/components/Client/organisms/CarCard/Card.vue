@@ -32,14 +32,20 @@
       </template>
 
       <template #footer>
-        <button class="rent-button" @click="createRental">Zarezerwuj</button>
+        <button
+          class="rent-button"
+          :disabled="isDateBeforeCurrent"
+          @click="createRental"
+        >
+          Zarezerwuj
+        </button>
       </template>
     </RentModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import CardInfo from "./CardInfo/CardInfo.vue";
 import CardHeader from "./CardHeader/CardHeader.vue";
 import { ICardProps } from "./Card.types";
@@ -51,7 +57,6 @@ import axios from "axios";
 const showModal = ref(false);
 const startDate = ref("");
 const finishDate = ref("");
-const user = ref(null);
 
 const props = defineProps<ICardProps>();
 
@@ -60,38 +65,6 @@ const { car } = props;
 const openModal = () => {
   showModal.value = true;
 };
-
-async function getCurrentUser() {
-  try {
-    const token = getToken();
-    if (!token) {
-      console.error("No Keycloak token");
-      return;
-    }
-
-    const response = await fetch("http://localhost:8081/api/users/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error fetching user data: ${response.statusText}`);
-    }
-
-    user.value = await response.json();
-    console.log("User data:", user);
-    return user;
-  } catch (err) {
-    console.error("Error fetching current user:", err);
-  }
-}
-
-onMounted(() => {
-  getCurrentUser();
-});
 
 const createRental = async () => {
   try {
@@ -102,7 +75,6 @@ const createRental = async () => {
     }
     const rentalRequest = {
       carId: car.id,
-      customerId: user.value.id,
       startDate: startDate.value,
       finishDate: finishDate.value,
     };
@@ -128,6 +100,19 @@ const createRental = async () => {
     console.error("Error creating rental:", err);
   }
 };
+
+const isDateBeforeCurrent = computed(() => {
+  if (!startDate.value || !finishDate.value) return true;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const selectedStart = new Date(startDate.value);
+
+  const selectedEnd = new Date(finishDate.value);
+
+  return selectedStart < today || selectedEnd < today;
+});
 
 const items = ref([
   { key: "Skrzynia biegów", value: translate(car.transmission) },
@@ -261,6 +246,12 @@ const additionals = ref([
 
     &:hover {
       background-color: #218838;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      background-color: gray;
+      cursor: not-allowed;
     }
   }
 }
