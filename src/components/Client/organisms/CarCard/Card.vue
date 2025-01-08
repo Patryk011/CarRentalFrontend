@@ -32,14 +32,20 @@
       </template>
 
       <template #footer>
-        <button class="rent-button" @click="createRental">Zarezerwuj</button>
+        <button
+          class="rent-button"
+          :disabled="isDateBeforeCurrent"
+          @click="createRental"
+        >
+          Zarezerwuj
+        </button>
       </template>
     </RentModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import CardInfo from "./CardInfo/CardInfo.vue";
 import CardHeader from "./CardHeader/CardHeader.vue";
 import { ICardProps } from "./Card.types";
@@ -67,7 +73,7 @@ const openModal = () => {
   showModal.value = true;
 };
 
-async function getCurrentUser() {
+const getUserInfo = async () => {
   try {
     const token = getToken();
     if (!token) {
@@ -75,29 +81,20 @@ async function getCurrentUser() {
       return;
     }
 
-    const response = await fetch("http://localhost:8081/api/users/me", {
-      method: "GET",
+    const response = await axios.get("http://localhost:8081/api/users/me", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`Error fetching user data: ${response.statusText}`);
-    }
+    console.log(response.data);
 
-    user.value = await response.json();
-    console.log("User data:", user);
-    return user;
+    user.value = response.data;
   } catch (err) {
-    console.error("Error fetching current user:", err);
+    console.error("Error fetching current customer:", err);
   }
-}
-
-onMounted(() => {
-  getCurrentUser();
-});
+};
 
 const sendConfirmationEmail = async (data: RentalDataForEmail) => {
   try {
@@ -133,7 +130,6 @@ const createRental = async () => {
     }
     const rentalRequest = {
       carId: car.id,
-      customerId: user.value.id,
       startDate: startDate.value,
       finishDate: finishDate.value,
     };
@@ -163,6 +159,19 @@ const createRental = async () => {
   }
 };
 
+const isDateBeforeCurrent = computed(() => {
+  if (!startDate.value || !finishDate.value) return true;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const selectedStart = new Date(startDate.value);
+
+  const selectedEnd = new Date(finishDate.value);
+
+  return selectedStart < today || selectedEnd < today;
+});
+
 const items = ref([
   { key: "Skrzynia biegów", value: translate(car.transmission) },
   { key: "Ilość miejsc", value: `${car.seats} osobowy` },
@@ -185,6 +194,10 @@ const additionals = ref([
     value: "Elastyczność każdego dnia",
   },
 ]);
+
+onMounted(() => {
+  getUserInfo();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -295,6 +308,12 @@ const additionals = ref([
 
     &:hover {
       background-color: #218838;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      background-color: gray;
+      cursor: not-allowed;
     }
   }
 }
