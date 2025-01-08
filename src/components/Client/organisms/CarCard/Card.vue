@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import CardInfo from "./CardInfo/CardInfo.vue";
 import CardHeader from "./CardHeader/CardHeader.vue";
 import { ICardProps } from "./Card.types";
@@ -54,9 +54,16 @@ import RentModal from "../../molecules/RentModal/RentModal.vue";
 import { getToken } from "@/services/keycloak.service";
 import axios from "axios";
 
+interface RentalDataForEmail {
+  id: string;
+  startDate: string;
+  finishDate: string;
+}
+
 const showModal = ref(false);
 const startDate = ref("");
 const finishDate = ref("");
+const user = ref(null);
 
 const props = defineProps<ICardProps>();
 
@@ -64,6 +71,54 @@ const { car } = props;
 
 const openModal = () => {
   showModal.value = true;
+};
+
+const getUserInfo = async () => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error("No Keycloak token");
+      return;
+    }
+
+    const response = await axios.get("http://localhost:8081/api/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log(response.data);
+
+    user.value = response.data;
+  } catch (err) {
+    console.error("Error fetching current customer:", err);
+  }
+};
+
+const sendConfirmationEmail = async (data: RentalDataForEmail) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error("No Keycloak token");
+      return;
+    }
+
+    const emailRequest = {
+      toEmail: user.value.email,
+      subject: `Potwierdzenie rezerwacji nr ${data.id}`,
+      body: `Informujemy, że rezerwacja nr ${data.id} będzie ważna w dniach od ${data.startDate} do ${data.finishDate}.`,
+    };
+
+    await axios.post("http://localhost:8081/api/email/send", emailRequest, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.error("Error sending email:", err);
+  }
 };
 
 const createRental = async () => {
@@ -91,7 +146,10 @@ const createRental = async () => {
     );
 
     const rental = response.data;
+
     console.log("Rental created:", rental);
+
+    await sendConfirmationEmail(rental);
 
     showModal.value = false;
 
@@ -136,6 +194,10 @@ const additionals = ref([
     value: "Elastyczność każdego dnia",
   },
 ]);
+
+onMounted(() => {
+  getUserInfo();
+});
 </script>
 
 <style lang="scss" scoped>

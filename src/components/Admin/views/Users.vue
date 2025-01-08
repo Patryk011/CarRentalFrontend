@@ -17,18 +17,20 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import axios from "axios";
-import usersData from "./pseudoData/Users.json";
 import { getToken } from "@/services/keycloak.service";
 import Table from "../organisms/Table/Table.vue";
 import FormsField from "../organisms/FormsFields/FormsField.vue";
-import { User, formFields } from "../organisms/FormsFields/UserFormFields";
+import {
+  Customer,
+  formFields,
+} from "../organisms/FormsFields/CustomerFormFields";
 import {
   openModal,
   closeModal,
   isModalVisible,
 } from "../organisms/Modal/ModalService";
 
-const users = ref<User[]>(usersData);
+const users = ref<Customer[]>([]);
 
 const columns = [
   { key: "id", label: "ID" },
@@ -51,7 +53,7 @@ const fetchUsers = async () => {
       return;
     }
 
-    const response = await axios.get<User[]>(
+    const response = await axios.get<Customer[]>(
       "http://localhost:8081/api/customers/all",
       {
         headers: {
@@ -65,7 +67,7 @@ const fetchUsers = async () => {
   }
 };
 
-const addUser = async (newUser: User) => {
+const addUser = async (newUser: Customer) => {
   try {
     const token = getToken();
 
@@ -74,7 +76,7 @@ const addUser = async (newUser: User) => {
       return;
     }
 
-    const response = await axios.post<User>(
+    const response = await axios.post<Customer>(
       "http://localhost:8081/api/users",
       newUser,
       {

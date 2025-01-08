@@ -6,6 +6,7 @@
       class="search-input"
       placeholder="Wyszukaj w tabeli..."
     />
+
     <button class="clear-button" @click="clearSearch">Wyczyść</button>
   </div>
 
@@ -32,7 +33,7 @@
         </td>
         <td v-if="actions">
           <button
-            v-for="(action, actionIndex) in actions(item)"
+            v-for="(action, actionIndex) in actions?.(item) || []"
             :key="actionIndex"
             :class="action.class"
             @click="() => action.onClick(item)"
@@ -43,28 +44,18 @@
       </tr>
     </tbody>
   </table>
-  <Modal
-    :isVisible="isModalVisible"
-    :message="'Czy na pewno chcesz usunąć ten rekord?'"
-    @confirmed="deleteUser"
-    @cancelled="closeModal"
-  />
 </template>
 
 <script setup lang="ts">
 import { defineProps, ref, computed, watch } from "vue";
-import Modal from "../Modal/Modal.vue"; //
 import { useSorting } from "@/composables/useSorting";
 import { ITableData, ITableProps } from "./Table.types";
 
 const props = defineProps<ITableProps>();
 
-const { columns } = props;
+const { columns, actions } = props;
 
 const tableData = ref<ITableData[]>(props.data);
-
-const isModalVisible = ref(false);
-const recordToDelete = ref<number | null>(null);
 
 const { sortedData, sortColumn, setSortDirection, sortDirection } =
   useSorting(tableData);
@@ -85,28 +76,6 @@ const filteredData = computed<ITableData[]>(() => {
 
 const clearSearch = () => {
   searchQuery.value = "";
-};
-
-const openModal = (id: number) => {
-  recordToDelete.value = id;
-  isModalVisible.value = true;
-};
-
-const closeModal = () => {
-  isModalVisible.value = false;
-  recordToDelete.value = null;
-};
-
-const deleteUser = () => {
-  if (recordToDelete.value === null) return;
-
-  const index = tableData.value.findIndex(
-    (item) => item.id === recordToDelete.value
-  );
-
-  if (index !== -1) tableData.value.splice(index, 1);
-
-  closeModal();
 };
 
 watch(
@@ -181,7 +150,7 @@ watch(
     }
   }
 
-  .delete-button {
+  .button {
     background-color: #e74c3c;
     color: white;
     border: none;
