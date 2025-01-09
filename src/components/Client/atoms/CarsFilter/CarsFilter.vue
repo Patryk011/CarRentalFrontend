@@ -1,14 +1,19 @@
 <template>
   <div class="filter-container">
     <label for="start-date" class="filter-label">Od:</label>
-    <input
-      type="date"
-      id="start-date"
+    <a-date-picker
       v-model="startDate"
       class="filter-input"
+      @change="handleStartDateChange"
+      :format="'DD-MM-YYYY'"
     />
     <label for="end-date" class="filter-label">Do:</label>
-    <input type="date" id="end-date" v-model="endDate" class="filter-input" />
+    <a-date-picker
+      v-model="endDate"
+      class="filter-input"
+      @change="handleFinishDateChange"
+      :format="'DD-MM-YYYY'"
+    />
     <button class="filter-button" @click="applyFilter">
       Sprawdź dostępność pojazdów w podanym przedziale
     </button>
@@ -17,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import "ant-design-vue/dist/antd.css";
 
 const startDate = ref<string>("");
 const endDate = ref<string>("");
@@ -27,6 +33,14 @@ const emit = defineEmits<{
 
 const applyFilter = () => {
   emit("filter", { startDate: startDate.value, endDate: endDate.value });
+};
+
+const handleStartDateChange = (selectedStartDate: Date) => {
+  startDate.value = selectedStartDate.toISOString().split("T")[0];
+};
+
+const handleFinishDateChange = (selectedFinishDate: Date) => {
+  endDate.value = selectedFinishDate.toISOString().split("T")[0];
 };
 </script>
 

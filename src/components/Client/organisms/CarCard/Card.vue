@@ -24,10 +24,18 @@
       <template #body>
         <div class="modal-body-content">
           <label>Data rozpoczęcia:</label>
-          <input type="date" v-model="startDate" />
-
+          <a-date-picker
+            v-model="startDate"
+            @change="handleStartDateChange"
+            :format="'DD-MM-YYYY'"
+          />
           <label>Data zakończenia:</label>
-          <input type="date" v-model="finishDate" />
+          <a-date-picker
+            v-model="finishDate"
+            class="filter-input"
+            @change="handleFinishDateChange"
+            :format="'DD-MM-YYYY'"
+          />
         </div>
       </template>
 
@@ -53,6 +61,7 @@ import { getCarImagePath, translate } from "@/utils/carUtils";
 import RentModal from "../../molecules/RentModal/RentModal.vue";
 import { getToken } from "@/services/keycloak.service";
 import axios from "axios";
+import "ant-design-vue/dist/antd.css";
 
 interface RentalDataForEmail {
   id: string;
@@ -159,6 +168,14 @@ const createRental = async () => {
   }
 };
 
+const handleStartDateChange = (selectedStartDate: Date) => {
+  startDate.value = selectedStartDate.toISOString().split("T")[0];
+};
+
+const handleFinishDateChange = (selectedFinishDate: Date) => {
+  finishDate.value = selectedFinishDate.toISOString().split("T")[0];
+};
+
 const isDateBeforeCurrent = computed(() => {
   if (!startDate.value || !finishDate.value) return true;
 
@@ -247,7 +264,7 @@ onMounted(() => {
 
       button {
         border: none;
-        padding: 1em;
+        padding: 0.7em;
         border-radius: 0.1em;
         color: white;
         font-size: 14px;
