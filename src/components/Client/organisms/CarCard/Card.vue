@@ -264,7 +264,7 @@ onMounted(() => {
 
       button {
         border: none;
-        padding: 1em;
+        padding: 0.7em;
         border-radius: 0.1em;
         color: white;
         font-size: 14px;
