@@ -105,27 +105,6 @@ const addRental = async (newRental: Rental) => {
   }
 };
 
-const deleteRental = async (rental: Rental) => {
-  try {
-    const token = getToken();
-
-    if (!token) {
-      console.error("No keycloak token");
-      return;
-    }
-
-    await axios.delete(`http://localhost:8081/api/rentals/${rental.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    rentals.value = rentals.value.filter((r) => r.id !== rental.id);
-  } catch (err) {
-    console.error("Błąd usuwania wypożyczenia: ", err);
-  }
-};
-
 onMounted(() => {
   fetchRentals();
 });

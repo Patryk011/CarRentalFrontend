@@ -20,7 +20,7 @@
                 :key="option"
                 :value="option"
               >
-                {{ option }}
+                {{ option[field.displayField || "label"] }}
               </option>
             </select>
           </template>
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { reactive, defineProps, defineEmits } from "vue";
 
-const props = defineProps({
+defineProps({
   formTitle: {
     type: String,
     required: true,
@@ -58,9 +58,15 @@ const props = defineProps({
       type: string;
       required?: boolean;
       placeholder?: string;
-      options?: string[];
+      options?: any[];
+      displayField?: string;
     }>,
     required: true,
+  },
+  displayField: {
+    type: String,
+    required: false,
+    default: null,
   },
 });
 

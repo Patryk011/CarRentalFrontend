@@ -7,7 +7,9 @@ export type TIconType =
   | "Logout"
   | "Users"
   | "Rentals"
-  | "Car";
+  | "Car"
+  | "Model"
+  | "Brand";
 
 export interface IIconProps {
   iconType: TIconType;

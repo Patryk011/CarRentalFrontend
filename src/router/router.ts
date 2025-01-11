@@ -5,6 +5,8 @@ import AdminLayout from "@/components/Layouts/AdminLayout.vue";
 import Dashboard from "@/components/Admin/views/Dashboard.vue";
 import RentsView from "@/components/Admin/views/RentsView.vue";
 import CarsView from "@/components/Admin/views/CarsView.vue";
+import CarBrandView from "@/components/Admin/views/CarBrandView.vue";
+import CarModelView from "@/components/Admin/views/CarModelView.vue";
 import { useAuthStore } from "@/store/authStore";
 import Account from "@/components/Client/views/Account.vue";
 import Users from "@/components/Admin/views/Users.vue";
@@ -39,6 +41,8 @@ const routes = [
       { path: "wypozyczenia", component: RentsView },
       { path: "auta", component: CarsView },
       { path: "users", component: Users },
+      { path: "brands", component: CarBrandView },
+      { path: "models", component: CarModelView },
     ],
     meta: { requiresAdmin: true },
   },

@@ -11,6 +11,8 @@
       />
       <SidebarItem to="/admin/users" icon="Users" text="Użytkownicy" />
       <SidebarItem to="/admin/auta" icon="Car" text="Auta" />
+      <SidebarItem to="/admin/brands" icon="Brand" text="Marki" />
+      <SidebarItem to="/admin/models" icon="Model" text="Modele" />
       <LogoutButton text="Wyloguj" />
     </nav>
   </aside>
