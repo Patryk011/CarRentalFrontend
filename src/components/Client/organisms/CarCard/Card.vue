@@ -43,7 +43,7 @@
         <button
           class="rent-button"
           :disabled="isDateBeforeCurrent"
-          @click="createRental"
+          @click="checkCarAvailability"
         >
           Zarezerwuj
         </button>
@@ -165,6 +165,35 @@ const createRental = async () => {
     window.location.href = `/rental-details/${rental.id}`;
   } catch (err) {
     console.error("Error creating rental:", err);
+  }
+};
+
+const checkCarAvailability = async () => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error("No Keycloak token");
+      return;
+    }
+    const response = await axios.get(
+      `http://localhost:8081/api/Cars/available/${car.id}?startDate=${startDate.value}&endDate=${finishDate.value}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    console.log(car.id);
+    const isOccupied = response.data;
+
+    if (isOccupied === 1) {
+      alert(
+        "Samochód jest niedostępny w wybranym terminie. Wybierz inny pojazd."
+      );
+      showModal.value = false;
+    } else if (isOccupied === 0) {
+      await createRental();
+    }
+  } catch (err) {
+    console.error("Error checking availability:", err);
   }
 };
 
