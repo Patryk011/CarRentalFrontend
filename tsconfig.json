@@ -12,7 +12,6 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
     "src/services/keycloak.service.js"
   ],
   "exclude": ["node_modules", "dist"]

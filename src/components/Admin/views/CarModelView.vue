@@ -97,7 +97,7 @@ const fetchModels = async () => {
 };
 
 const handleFormSubmitted = async (formData: {
-  modelName: string;
+  model: string;
   brandId: { value: number; label: string };
 }) => {
   try {
@@ -110,8 +110,9 @@ const handleFormSubmitted = async (formData: {
     const response = await axios.post<CarModelDTO>(
       "http://localhost:8081/api/carModels",
       {
-        model: formData.modelName,
+        model: formData.model,
         carBrandId: formData.brandId.value,
+        carBrandName: formData.brandId.label,
       },
       {
         headers: {

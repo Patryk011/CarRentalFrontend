@@ -5,8 +5,8 @@ import router from "../src/router/router";
 import { initKeycloak } from "./services/keycloak.service";
 import "./style.css";
 import Antd from "ant-design-vue";
+import InfiniteScroll from "v-infinite-scroll";
 
-// Function that cleans the 'error' from a URL that doesn't exist.
 const cleanUrl = () => {
   const urlHash = window.location.hash;
 
@@ -19,6 +19,7 @@ const cleanUrl = () => {
 const pinia = createPinia();
 initKeycloak().then(() => {
   const app = createApp(App);
+  app.use(InfiniteScroll);
   app.use(Antd);
   app.use(pinia);
   app.use(router);

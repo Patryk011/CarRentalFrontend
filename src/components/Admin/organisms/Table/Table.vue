@@ -10,40 +10,48 @@
     <button class="clear-button" @click="clearSearch">Wyczyść</button>
   </div>
 
-  <table class="table">
-    <thead>
-      <tr class="table-header">
-        <th
-          v-for="column in columns"
-          :key="column.key"
-          @click="setSortDirection(column.key)"
-        >
-          {{ column.label }}
-          <span v-if="sortColumn === column.key" class="sort-indicator">
-            {{ sortDirection === "asc" ? "↑" : "↓" }}
-          </span>
-        </th>
-        <th v-if="actions">Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in filteredData" :key="item.id">
-        <td v-for="column in columns" :key="column.key">
-          {{ item[column.key] }}
-        </td>
-        <td v-if="actions">
-          <button
-            v-for="(action, actionIndex) in actions?.(item) || []"
-            :key="actionIndex"
-            :class="action.class"
-            @click="() => action.onClick(item)"
+  <div
+    v-infinite-scroll="loadMore"
+    :infinite-scroll-disabled="loading"
+    :infinite-scroll-distance="10"
+    class="table-container"
+  >
+    <table class="table">
+      <thead>
+        <tr class="table-header">
+          <th
+            v-for="column in columns"
+            :key="column.key"
+            @click="setSortDirection(column.key)"
           >
-            {{ action.label }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            {{ column.label }}
+            <span v-if="sortColumn === column.key" class="sort-indicator">
+              {{ sortDirection === "asc" ? "↑" : "↓" }}
+            </span>
+          </th>
+          <th v-if="actions">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in filteredData" :key="item.id">
+          <td v-for="column in columns" :key="column.key">
+            {{ item[column.key] }}
+          </td>
+          <td v-if="actions">
+            <button
+              v-for="(action, actionIndex) in actions?.(item) || []"
+              :key="actionIndex"
+              :class="action.class"
+              @click="() => action.onClick(item)"
+            >
+              {{ action.label }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-if="loading" class="loading-indicator">Ładowanie...</div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -61,12 +69,18 @@ const { sortedData, sortColumn, setSortDirection, sortDirection } =
   useSorting(tableData);
 
 const searchQuery = ref("");
+const loading = ref(false);
+const currentPage = ref(1);
+
+const loadMore = () => {
+  if (loading.value) return;
+  loading.value = true;
+  currentPage.value += 1;
+};
 
 const filteredData = computed<ITableData[]>(() => {
   if (!searchQuery.value) return sortedData.value;
-
   const query = searchQuery.value.toLowerCase();
-
   return sortedData.value.filter((item) =>
     Object.values(item).some((value) =>
       String(value).toLowerCase().includes(query)
@@ -111,6 +125,12 @@ watch(
     }
   }
 }
+
+.table-container {
+  overflow-y: auto;
+  max-height: 48.5em; /* Dostosuj wysokość kontenera tabeli */
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -162,5 +182,11 @@ watch(
       background-color: #c0392b;
     }
   }
+}
+.loading-indicator {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #888;
 }
 </style>

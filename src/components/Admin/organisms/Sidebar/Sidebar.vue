@@ -3,12 +3,7 @@
     <MenuToggle :isExpanded @toggle="toggleSidebar" />
     <nav class="menu">
       <h3>Menu</h3>
-      <SidebarItem to="/admin" icon="Home" text="Panel" />
-      <SidebarItem
-        to="/admin/wypozyczenia"
-        icon="Rentals"
-        text="Wypożyczenia"
-      />
+      <SidebarItem to="/admin" icon="Rentals" text="Wypożyczenia" />
       <SidebarItem to="/admin/users" icon="Users" text="Użytkownicy" />
       <SidebarItem to="/admin/auta" icon="Car" text="Auta" />
       <SidebarItem to="/admin/brands" icon="Brand" text="Marki" />

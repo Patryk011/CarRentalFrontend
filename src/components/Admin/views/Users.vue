@@ -1,16 +1,6 @@
 <template>
   <div class="users-container">
-    <button @click="openModal" class="add-user-button">
-      Dodaj nowego użytkownika
-    </button>
     <Table :columns="columns" :data="users" />
-    <FormsField
-      v-if="isModalVisible"
-      :formTitle="'Dodaj nowego użytkownika'"
-      :formFields="formFields"
-      @form-submitted="addUser"
-      @close-modal="closeModal"
-    />
   </div>
 </template>
 
@@ -19,16 +9,7 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
 import Table from "../organisms/Table/Table.vue";
-import FormsField from "../organisms/FormsFields/FormsField.vue";
-import {
-  Customer,
-  formFields,
-} from "../organisms/FormsFields/CustomerFormFields";
-import {
-  openModal,
-  closeModal,
-  isModalVisible,
-} from "../organisms/Modal/ModalService";
+import { Customer } from "../organisms/FormsFields/CustomerFormFields";
 
 const users = ref<Customer[]>([]);
 
@@ -64,32 +45,6 @@ const fetchUsers = async () => {
     users.value = response.data;
   } catch (err) {
     console.error("Błąd przy pobieraniu danych: ", err);
-  }
-};
-
-const addUser = async (newUser: Customer) => {
-  try {
-    const token = getToken();
-
-    if (!token) {
-      console.error("No keycloak token");
-      return;
-    }
-
-    const response = await axios.post<Customer>(
-      "http://localhost:8081/api/users",
-      newUser,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    users.value.push(response.data);
-    closeModal();
-  } catch (err) {
-    console.error("Błąd dodawania użytkownika:", err);
   }
 };
 

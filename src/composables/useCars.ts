@@ -1,10 +1,32 @@
-import { reactive, ref } from "vue";
+import { reactive, ref, computed, watch } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
 import { CarDTO } from "@/components/Admin/organisms/FormsFields/CarFormFields";
+import {
+  CarBrandDTO,
+  CarModelDTO,
+} from "@/components/Admin/organisms/FormsFields/ModelFormFields";
 
 export default function useCars() {
-  const cars = reactive(ref<CarDTO[]>([]));
+  const cars = ref<CarDTO[]>([]);
+  const carBrandOptions = ref([]);
+  const carModelOptions = ref([]);
+  const formData = reactive<CarDTO>({
+    id: null,
+    carBrandId: null,
+    carModelId: null,
+    carBrandName: "",
+    carModelName: "",
+    registrationNumber: "",
+    productionYear: null,
+    color: "",
+    pricePerDay: null,
+    transmission: "",
+    fuelType: "",
+    seats: null,
+    engineCapacity: null,
+    state: "AVAILABLE",
+  });
 
   const fetchCars = async () => {
     try {
@@ -79,11 +101,75 @@ export default function useCars() {
       console.error("Błąd odblokowywania samochodu:", error);
     }
   };
+
+  const fetchBrands = async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        console.error(
+          "Brak tokena Keycloak. Użytkownik może być niezalogowany."
+        );
+        return;
+      }
+      const response = await axios.get<CarBrandDTO[]>(
+        "http://localhost:8081/api/carBrands/all",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      carBrandOptions.value = response.data.map((brand) => ({
+        value: brand.id,
+        label: brand.brand,
+      }));
+    } catch (error) {
+      console.error("Błąd przy pobieraniu marek: ", error);
+    }
+  };
+
+  const fetchModels = async (brandId: number) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        console.error(
+          "Brak tokena Keycloak. Użytkownik może być niezalogowany."
+        );
+        return;
+      }
+      const response = await axios.get<CarModelDTO[]>(
+        `http://localhost:8081/api/carModels/brandById/${brandId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      carModelOptions.value = response.data.map((model) => ({
+        value: model.id,
+        label: model.model,
+      }));
+    } catch (error) {
+      console.error("Błąd przy pobieraniu modeli: ", error);
+    }
+  };
+
+  const selectedBrandId = computed(() => formData.carBrandId);
+
+  watch(selectedBrandId, (newBrandId) => {
+    if (newBrandId) {
+      fetchModels(Number(newBrandId));
+    } else {
+      carModelOptions.value = [];
+    }
+  });
+
   return {
     cars,
     fetchCars,
     addCar,
     blockCar,
     unblockCar,
+    fetchBrands,
+    fetchModels,
+    carBrandOptions,
+    carModelOptions,
+    formData,
   };
 }

@@ -19,7 +19,7 @@ export const formFields = [
     options: [],
   },
   {
-    name: "modelName",
+    name: "model",
     label: "Nazwa modelu",
     type: "text",
     required: true,

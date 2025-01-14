@@ -59,6 +59,7 @@ defineProps({
       required?: boolean;
       placeholder?: string;
       options?: any[];
+      value?: any;
       displayField?: string;
     }>,
     required: true,
@@ -90,6 +91,7 @@ const submitForm = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 .modal-content {

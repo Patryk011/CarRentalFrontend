@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import ClientLayout from "@/components/Layouts/ClientLayout.vue";
 import HomeView from "@/components/Client/views/HomeView.vue";
 import AdminLayout from "@/components/Layouts/AdminLayout.vue";
-import Dashboard from "@/components/Admin/views/Dashboard.vue";
 import RentsView from "@/components/Admin/views/RentsView.vue";
 import CarsView from "@/components/Admin/views/CarsView.vue";
 import CarBrandView from "@/components/Admin/views/CarBrandView.vue";
@@ -37,8 +36,7 @@ const routes = [
     path: "/admin",
     component: AdminLayout,
     children: [
-      { path: "", component: Dashboard },
-      { path: "wypozyczenia", component: RentsView },
+      { path: "", component: RentsView },
       { path: "auta", component: CarsView },
       { path: "users", component: Users },
       { path: "brands", component: CarBrandView },
