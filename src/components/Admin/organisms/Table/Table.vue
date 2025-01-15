@@ -6,10 +6,8 @@
       class="search-input"
       placeholder="Wyszukaj w tabeli..."
     />
-
     <button class="clear-button" @click="clearSearch">Wyczyść</button>
   </div>
-
   <div
     v-infinite-scroll="loadMore"
     :infinite-scroll-disabled="loading"
@@ -128,7 +126,7 @@ watch(
 
 .table-container {
   overflow-y: auto;
-  max-height: 48.5em; /* Dostosuj wysokość kontenera tabeli */
+  max-height: 48.5em;
 }
 
 .table {
@@ -188,5 +186,41 @@ watch(
   padding: 1rem;
   font-size: 1rem;
   color: #888;
+}
+
+.discount-button {
+  margin-bottom: 0.12rem;
+  padding: 0.25rem 0.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.block-button {
+  background-color: red;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.block-button:hover {
+  background-color: darkred;
+}
+
+.unblock-button {
+  background-color: green;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.unblock-button:hover {
+  background-color: darkgreen;
 }
 </style>

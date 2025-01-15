@@ -174,6 +174,17 @@ const submitForm = async () => {
     await addCar(formData);
     fetchCars();
     addCarModal.value = false;
+    formData.carBrandId = null;
+    formData.carModelId = null;
+    formData.registrationNumber = "";
+    formData.productionYear = null;
+    formData.color = "";
+    formData.pricePerDay = null;
+    formData.transmission = "";
+    formData.fuelType = "";
+    formData.seats = null;
+    formData.engineCapacity = null;
+    formData.state = "";
   } catch (error) {
     console.error("Błąd przy dodawaniu samochodu:", error);
   }
@@ -185,7 +196,7 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .cars-container {
   padding: 2rem;
 
@@ -201,32 +212,6 @@ onMounted(async () => {
 
   .add-car-button:hover {
     background-color: #0056b3;
-  }
-
-  .block-button {
-    background-color: red;
-    color: white;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-  }
-
-  .block-button:hover {
-    background-color: darkred;
-  }
-
-  .unblock-button {
-    background-color: green;
-    color: white;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-  }
-
-  .unblock-button:hover {
-    background-color: darkgreen;
   }
 
   .modal-overlay {

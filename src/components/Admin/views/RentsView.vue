@@ -145,16 +145,16 @@ onMounted(() => {
 }
 
 .table .button {
-  margin-bottom: 0.5rem; /* Dodaj margines dolny */
-  padding: 0.5rem 1rem; /* Zwiększ padding */
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 0.25rem;
-  background-color: #007bff; /* Zmień kolor tła na niebieski */
+  background-color: #007bff;
   color: white;
   cursor: pointer;
 }
 
 .table .button:hover {
-  background-color: #0056b3; /* Ciemniejszy niebieski po najechaniu */
+  background-color: #0056b3;
 }
 </style>

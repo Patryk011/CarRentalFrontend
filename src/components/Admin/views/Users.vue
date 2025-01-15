@@ -1,17 +1,46 @@
 <template>
   <div class="users-container">
-    <Table :columns="columns" :data="users" />
+    <div v-if="isModalOpen" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Dodaj zniżkę</h3>
+        <p>
+          Użytkownik:
+          <strong>
+            {{ selectedUser.firstName }} {{ selectedUser.lastName }}
+          </strong>
+        </p>
+        <div class="form-group">
+          <label for="discount">Wpisz zniżkę (%)</label>
+          <input
+            id="discount"
+            type="number"
+            v-model="discountValue"
+            min="5"
+            max="50"
+            placeholder="Wpisz zniżkę (%)"
+          />
+        </div>
+        <div class="modal-actions">
+          <button @click="setDiscount">Zapisz</button>
+          <button @click="closeDiscountModal">Anuluj</button>
+        </div>
+      </div>
+    </div>
+    <Table :columns="columns" :data="users" :actions="actions" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { getToken } from "@/services/keycloak.service";
 import Table from "../organisms/Table/Table.vue";
-import { Customer } from "../organisms/FormsFields/CustomerFormFields";
+import { CustomerDTO } from "../organisms/FormsFields/CustomerFormFields";
 
-const users = ref<Customer[]>([]);
+const users = ref<CustomerDTO[]>([]);
+const isModalOpen = ref(false);
+const selectedUser = ref<CustomerDTO | null>(null);
+const discountValue = ref<number | null>(null);
 
 const columns = [
   { key: "id", label: "ID" },
@@ -20,9 +49,14 @@ const columns = [
   { key: "email", label: "Email" },
   { key: "phoneNumber", label: "Numer telefonu" },
   { key: "birthDate", label: "Data urodzenia" },
-  { key: "licenseNumber", label: "Numer prawa jazdy" },
-  { key: "address", label: "Adres" },
-  { key: "registrationDate", label: "Data rejestracji" },
+];
+
+const actions = (item: CustomerDTO) => [
+  {
+    label: "Ustaw zniżkę",
+    onClick: () => openDiscountModal(item),
+    class: "discount-button",
+  },
 ];
 
 const fetchUsers = async () => {
@@ -34,7 +68,7 @@ const fetchUsers = async () => {
       return;
     }
 
-    const response = await axios.get<Customer[]>(
+    const response = await axios.get<CustomerDTO[]>(
       "http://localhost:8081/api/customers/all",
       {
         headers: {
@@ -48,27 +82,141 @@ const fetchUsers = async () => {
   }
 };
 
-onMounted(() => {
-  fetchUsers();
-});
+const openDiscountModal = (user: CustomerDTO) => {
+  selectedUser.value = user;
+  discountValue.value = user.discountPercentage || null;
+  isModalOpen.value = true;
+};
+
+const closeDiscountModal = () => {
+  isModalOpen.value = false;
+  selectedUser.value = null;
+  discountValue.value = null;
+};
+
+const setDiscount = async () => {
+  if (!selectedUser.value || discountValue.value === null) {
+    console.error("Nie wybrano użytkownika lub zniżki");
+    return;
+  }
+
+  if (discountValue.value < 5 || discountValue.value > 50) {
+    alert("Zniżka musi być w zakresie od 5% do 50%");
+    return;
+  }
+
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error("No keycloak token");
+      return;
+    }
+
+    const updatedUser = {
+      ...selectedUser.value,
+      discountPercentage: discountValue.value,
+    };
+    await axios.post(
+      `http://localhost:8081/api/customers/${updatedUser.id}`,
+      updatedUser,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const userIndex = users.value.findIndex((u) => u.id === updatedUser.id);
+    if (userIndex !== -1) {
+      users.value[userIndex] = updatedUser;
+    }
+
+    closeDiscountModal();
+  } catch (err) {
+    console.error("Błąd podczas ustawiania zniżki: ", err);
+  }
+};
+
+fetchUsers();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .users-container {
   padding: 2rem;
 }
 
-.add-user-button {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 40rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+h3 {
   margin-bottom: 1rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 0.12rem solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.modal-actions button {
+  margin-left: 1rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 0.25rem;
-  background-color: #007bff;
-  color: white;
   cursor: pointer;
 }
 
-.add-user-button:hover {
-  background-color: #0056b3;
+.modal-actions button:first-of-type {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-actions button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 </style>
