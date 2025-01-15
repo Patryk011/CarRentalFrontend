@@ -150,6 +150,17 @@ export default function useCars() {
     }
   };
 
+  const deleteCar = async (id: number) => {
+    try {
+      const response = await axios.delete(`/api/cars/${id}`);
+      if (response.status === 200) {
+        cars.value = cars.value.filter((car) => car.id !== id);
+      }
+    } catch (error) {
+      console.error("Błąd przy usuwaniu samochodu:", error);
+    }
+  };
+
   const selectedBrandId = computed(() => formData.carBrandId);
 
   watch(selectedBrandId, (newBrandId) => {
@@ -171,5 +182,6 @@ export default function useCars() {
     carBrandOptions,
     carModelOptions,
     formData,
+    deleteCar,
   };
 }

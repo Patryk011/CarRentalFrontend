@@ -3,6 +3,9 @@
     <button @click="addCarModal = true" class="add-car-button">
       Dodaj auto
     </button>
+    <button @click="generateCSVReport" class="generate-report-button">
+      Generuj raport
+    </button>
 
     <div v-if="addCarModal" class="modal-overlay">
       <div class="modal-content">
@@ -126,6 +129,7 @@ import { onMounted, ref } from "vue";
 import Table from "../organisms/Table/Table.vue";
 import useCars from "@/composables/useCars";
 import { CarDTO } from "../organisms/FormsFields/CarFormFields";
+import Papa from "papaparse";
 
 const {
   cars,
@@ -190,6 +194,43 @@ const submitForm = async () => {
   }
 };
 
+const generateCSVReport = () => {
+  try {
+    const reportData = cars.value.map((car) => ({
+      ID: car.id,
+      "Numer rejestracyjny": car.registrationNumber,
+      Marka: car.carBrandName,
+      Model: car.carModelName,
+      Stan: car.state,
+      "Rok produkcji": car.productionYear,
+      Kolor: car.color,
+      "Cena za dzień": car.pricePerDay,
+      "Skrzynia biegów": car.transmission,
+      "Typ paliwa": car.fuelType,
+      "Ilość miejsc": car.seats,
+      "Pojemność silnika": car.engineCapacity,
+    }));
+
+    const csv = Papa.unparse(reportData, {
+      quotes: true,
+      delimiter: ";",
+      header: true,
+      newline: "\r\n",
+    });
+
+    const bom = "\uFEFF";
+    const finalCsv = bom + csv;
+
+    const blob = new Blob([finalCsv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "raport_samochodow.csv";
+    link.click();
+  } catch (error) {
+    console.error("Błąd przy generowaniu raportu CSV", error);
+  }
+};
+
 onMounted(async () => {
   fetchCars();
   await fetchBrands();
@@ -197,6 +238,19 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.generate-report-button {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.generate-report-button:hover {
+  background-color: #218838;
+}
 .cars-container {
   padding: 2rem;
 

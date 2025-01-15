@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import Table from "../organisms/Table/Table.vue";
 import { getToken } from "@/services/keycloak.service";
@@ -207,7 +207,6 @@ const fetchCars = async () => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    console.log("Fetched cars:", response.data);
     cars.value = response.data;
   } catch (err) {
     console.error("Błąd przy pobieraniu danych: ", err);
