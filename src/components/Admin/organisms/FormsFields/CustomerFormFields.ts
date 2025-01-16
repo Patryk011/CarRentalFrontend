@@ -8,6 +8,6 @@ export interface CustomerDTO {
   licenseNumber: string;
   address: string;
   registrationDate: string;
-  discountPercentage: number;
+  discountPercentage?: number;
   keycloakId: number;
 }

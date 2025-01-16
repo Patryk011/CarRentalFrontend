@@ -87,7 +87,6 @@ const cars = ref<CarDTO[]>([]);
 const showAddRentalForm = ref(false);
 
 const newRental = ref<RentalDTO>({
-  id: 0,
   customerId: 0,
   carId: 0,
   startDate: "",
@@ -95,14 +94,13 @@ const newRental = ref<RentalDTO>({
 });
 
 const columns = [
-  { key: "id", label: "ID" },
+  { key: "id", label: "ID wypożyczenia" },
   { key: "customerName", label: "Klient" },
   { key: "carBrand", label: "Marka" },
   { key: "carModel", label: "Model" },
-  { key: "totalCost", label: "Cena za dzień" },
+  { key: "totalCost", label: "Koszt wynajmu" },
   { key: "startDate", label: "Data rozpoczęcia" },
   { key: "finishDate", label: "Data zakończenia" },
-  { key: "totalRentalCost", label: "Koszt" },
   { key: "status", label: "Status" },
 ];
 
@@ -222,35 +220,27 @@ const submitRentalForm = async () => {
       return;
     }
 
-    const maxId = rentals.value.reduce(
-      (max, rental) => Math.max(max, rental.id),
-      0
-    );
-
-    newRental.value.id = maxId + 1;
-
     const response = await axios.post<RentalDTO>(
-      "http://localhost:8081/api/rentals",
+      "http://localhost:8081/api/rentals/add",
       newRental.value,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
       }
     );
 
     rentals.value.push({
-      id: response.data.id,
       customerId: response.data.customerId,
       carId: response.data.carId,
       startDate: response.data.startDate,
       finishDate: response.data.finishDate,
     });
 
+    await fetchRentals();
+
     showAddRentalForm.value = false;
     newRental.value = {
-      id: 0,
       customerId: 0,
       carId: 0,
       startDate: "",

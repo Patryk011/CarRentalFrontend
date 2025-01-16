@@ -15,7 +15,7 @@
             id="discount"
             type="number"
             v-model="discountValue"
-            min="5"
+            min="0"
             max="50"
             placeholder="Wpisz zniżkę (%)"
           />
@@ -99,11 +99,7 @@ const setDiscount = async () => {
     console.error("Nie wybrano użytkownika lub zniżki");
     return;
   }
-
-  if (discountValue.value < 5 || discountValue.value > 50) {
-    alert("Zniżka musi być w zakresie od 5% do 50%");
-    return;
-  }
+  const finalDiscount = discountValue.value === 0 ? null : discountValue.value;
 
   try {
     const token = getToken();
@@ -114,8 +110,9 @@ const setDiscount = async () => {
 
     const updatedUser = {
       ...selectedUser.value,
-      discountPercentage: discountValue.value,
+      discountPercentage: finalDiscount,
     };
+
     await axios.post(
       `http://localhost:8081/api/customers/${updatedUser.id}`,
       updatedUser,
