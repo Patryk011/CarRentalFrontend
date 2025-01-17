@@ -12,7 +12,7 @@ defineProps<IBannerProps>();
 .banner {
   width: 100%;
   padding: 1rem 0;
-  margin-top: 4.8%;
+  margin-top: 2.8em;
   background: linear-gradient(90deg, #000000, #4e4c4c);
   color: white;
   display: flex;

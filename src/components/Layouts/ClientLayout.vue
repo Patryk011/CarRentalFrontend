@@ -48,7 +48,7 @@ const navItems = ref([
   .main-header {
     background-color: #ffffff;
     width: 100%;
-    height: 9.2%;
+    height: 6.5em;
     position: fixed;
     top: 0;
     left: 0;
