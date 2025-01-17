@@ -79,6 +79,8 @@ const props = defineProps<ICardProps>();
 const { car } = props;
 
 const openModal = () => {
+  getUserInfo();
+
   showModal.value = true;
 };
 
@@ -96,8 +98,6 @@ const getUserInfo = async () => {
         "Content-Type": "application/json",
       },
     });
-
-    console.log(response.data);
 
     user.value = response.data;
   } catch (err) {
@@ -240,10 +240,6 @@ const additionals = ref([
     value: "Elastyczność każdego dnia",
   },
 ]);
-
-onMounted(() => {
-  getUserInfo();
-});
 </script>
 
 <style lang="scss" scoped>
